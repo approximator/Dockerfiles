@@ -9,6 +9,8 @@ RUN apt-get update                                 \
  && add-apt-repository ppa:ubuntu-sdk-team/ppa     \
  && apt-get update                                 \
  && apt-get install --no-install-recommends -y     \
+        autoconf \
+        automake \
         g++ \
         gcc \
         git \
@@ -28,10 +30,16 @@ RUN apt-get update                                 \
         qtscript5-dev                      \
  && apt-get clean
 
-# build latest qbs
+# build latest qbs and patchelf
 RUN cd /tmp                                    \
  && git clone git://code.qt.io/qt-labs/qbs.git \
- && qmake -r qbs/qbs.pro \
- && make -j4             \
- && make install         \
- && rm -rf /tmp/*
+ && qmake -r qbs/qbs.pro                       \
+ && make -j4                                   \
+ && make install                               \
+                                               \
+ && cd /tmp                                    \
+ && git clone https://github.com/NixOS/patchelf.git patchelf \
+ && cd patchelf && ./bootstrap.sh && ./configure             \
+ && make && make install                                     \
+ && cd /tmp && find . -delete                                \
+ && apt-get -y purge autoconf automake
