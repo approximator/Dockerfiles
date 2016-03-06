@@ -4,9 +4,11 @@ MAINTAINER Oleksii Aliakin <alex@nls.la>
 ENV DEBIAN_FRONTEND noninteractive
 
 # install all the libraries needed for running qt application
+# and python scripts
 RUN apt-get update \
  && apt-get install --no-install-recommends -y    \
         "^libxcb.*"             \
+        gir1.2-gtk-2.0          \
         imagemagick             \
         libdbus-1-3             \
         libdouble-conversion1v5 \
@@ -25,7 +27,14 @@ RUN apt-get update \
         libxkbcommon-x11-0      \
         libxkbcommon0           \
         libxrender1             \
+        python-matplotlib       \
+        python-pillow           \
+        python-pip              \
+        python-wxgtk2.8         \
+        python-wxtools          \
+        wx2.8-i18n              \
         xvfb                    \
- && apt-get clean
+ && apt-get clean               \
+ && pip install pyscreenshot -V
 
 ADD take_screenshot.sh /
