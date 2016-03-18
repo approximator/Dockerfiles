@@ -35,6 +35,6 @@ RUN apt-get update \
         wx2.8-i18n              \
         xvfb                    \
  && apt-get clean               \
- && pip install pyscreenshot pyvirtualdisplay -V
+ && pip install pyscreenshot pyvirtualdisplay easyprocess -V
 
 ADD take_screenshot.sh /
