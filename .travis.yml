@@ -1,0 +1,13 @@
+services:
+  - docker
+
+env:
+  - IMAGE=Qt IMAGE_TAG=approximator/qt
+  - IMAGE=Qt_Test IMAGE_TAG=approximator/qttest
+  - IMAGE=QtCreator IMAGE_TAG=approximator/qtcreator
+  - IMAGE=Texlive_Ubuntu IMAGE_TAG=approximator/texlive
+
+script:
+  # build images
+  - cd $IMAGE
+  - docker build -t $IMAGE_TAG .
