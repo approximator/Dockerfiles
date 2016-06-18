@@ -1,5 +1,5 @@
-FROM approximator/qt
-MAINTAINER Oleksii Aliakin <alex@nls.la>
+FROM approximator/qbs:1.5
+MAINTAINER alex@nls.la
 
 RUN cd /tmp                                                                    \
  && git clone --recursive https://code.qt.io/qt-creator/qt-creator.git         \
