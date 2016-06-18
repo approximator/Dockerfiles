@@ -1,5 +1,5 @@
 FROM ubuntu:wily
-MAINTAINER Oleksii Aliakin <alex@nls.la>
+MAINTAINER alex@nls.la
 
 RUN echo "deb http://archive.ubuntu.com/ubuntu wily multiverse" | tee -a /etc/apt/sources.list \
  && DEBIAN_FRONTEND=noninteractive apt update                             \
@@ -32,4 +32,5 @@ RUN echo "deb http://archive.ubuntu.com/ubuntu wily multiverse" | tee -a /etc/ap
         texlive-xetex              \
  && pip3 install -U pip            \
  && pip3 install -U numpy jupyter  \
- && apt-get clean
+ && apt-get clean                  \
+ && rm -rf /var/lib/apt/lists/

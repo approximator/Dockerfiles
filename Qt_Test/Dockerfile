@@ -1,5 +1,5 @@
 FROM ubuntu:wily
-MAINTAINER Oleksii Aliakin <alex@nls.la>
+MAINTAINER alex@nls.la
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -35,6 +35,7 @@ RUN apt-get update \
         wx2.8-i18n              \
         xvfb                    \
  && apt-get clean               \
+ && rm -rf /var/lib/apt/lists/  \
  && pip install pyscreenshot pyvirtualdisplay easyprocess -V
 
 ADD take_screenshot.sh /

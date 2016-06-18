@@ -1,0 +1,66 @@
+FROM ubuntu:16.04
+MAINTAINER alex@nls.la
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
+    "^libxcb.*"                            \
+    autoconf                               \
+    automake                               \
+    bison                                  \
+    cmake                                  \
+    flex                                   \
+    g++                                    \
+    git                                    \
+    gperf                                  \
+    libasound2-dev                         \
+    libcap-dev                             \
+    libdbus-1-dev                          \
+    libegl1-mesa-dev                       \
+    libfontconfig1-dev                     \
+    libfreetype6-dev                       \
+    libglu1-mesa-dev                       \
+    libgstreamer-plugins-base0.10-dev      \
+    libgstreamer0.10-dev                   \
+    libicu-dev                             \
+    libnss3-dev                            \
+    libpci-dev                             \
+    libpulse-dev                           \
+    libssl-dev                             \
+    libudev-dev                            \
+    libx11-dev                             \
+    libx11-xcb-dev                         \
+    libxcomposite-dev                      \
+    libxcursor-dev                         \
+    libxdamage-dev                         \
+    libxext-dev                            \
+    libxfixes-dev                          \
+    libxi-dev                              \
+    libxrandr-dev                          \
+    libxrender-dev                         \
+    libxslt-dev                            \
+    libxss-dev                             \
+    libxtst-dev                            \
+    perl                                   \
+    python                                 \
+    ruby                                   \
+    wget                                   \
+ && apt-get clean                          \
+ && rm -rf /var/lib/apt/lists/
+
+ENV QTDIR="/usr"
+
+RUN cd /tmp                                                                    \
+ && wget -c http://download.qt.io/official_releases/qt/5.6/5.6.1/single/qt-everywhere-opensource-src-5.6.1.tar.gz \
+                                                                               \
+ && mkdir /tmp/qt-build && cd /tmp/qt-build                                    \
+ && tar xvf /tmp/qt-everywhere-opensource-src-5.6.1.tar.gz                     \
+ && cd /tmp/qt-build/qt-everywhere-opensource-src-5.6.1                        \
+                                                                               \
+ && ./configure -prefix "/usr" -confirm-license -opensource -release           \
+                -dbus-linked -openssl-linked -qt-zlib -qt-libjpeg -qt-libpng   \
+                -qt-xcb -qt-xkbcommon -qt-xkbcommon-x11 -qt-freetype -qt-pcre  \
+                -qt-harfbuzz -icu -no-nis                                      \
+ && make -j5                                                                   \
+ && make install                                                               \
+                                                                               \
+ && cd /tmp && find . -delete

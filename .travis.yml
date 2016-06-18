@@ -1,0 +1,22 @@
+services:
+  - docker
+
+env:
+  # - IMAGE=Qt IMAGE_TAG=approximator/qt
+  # - IMAGE=QtCreator IMAGE_TAG=approximator/qtcreator
+  - IMAGE=TravisCLI      IMAGE_TAG=traviscli VERSION=latest
+  - IMAGE=qbs            IMAGE_TAG=qbs       VERSION=1.5
+  - IMAGE=Qt_Test        IMAGE_TAG=qttest    VERSION=15.10
+  - IMAGE=Texlive_Ubuntu IMAGE_TAG=texlive   VERSION=latest
+
+script:
+  # build images
+  - cd $IMAGE
+  - docker build -t $IMAGE_TAG .
+
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker tag $IMAGE_TAG $DOCKER_USERNAME/$IMAGE_TAG:$VERSION;
+    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker push $DOCKER_USERNAME/$IMAGE_TAG:$VERSION;
+    fi
