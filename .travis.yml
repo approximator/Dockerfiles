@@ -8,6 +8,7 @@ env:
   - IMAGE=qbs            IMAGE_TAG=qbs       VERSION=1.5
   - IMAGE=Qt_Test        IMAGE_TAG=qttest    VERSION=15.10
   - IMAGE=Texlive_Ubuntu IMAGE_TAG=texlive   VERSION=latest
+  - IMAGE=pycharm        IMAGE_TAG=pycharm   VERSION=latest
 
 script:
   # build images

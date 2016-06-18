@@ -1,0 +1,23 @@
+#!/bin/bash
+
+ENTRY_POINT="/tmp/dock_pycharm_entry_point.sh"
+
+cat > ${ENTRY_POINT} << EOF
+#!/bin/bash
+groupadd -g $(getent group $USER | cut -d: -f3) $USER
+useradd -m -g $USER -G sudo -N -u $UID $USER
+chown $USER:$USER /home/$USER/.PyCharm2016.1
+chown $USER:$USER /home/$USER/.java
+/bin/su $USER -c "/etc/pycharm/bin/pycharm.sh"
+
+EOF
+
+chmod +x ${ENTRY_POINT}
+VOLUMES="-v ${ENTRY_POINT}:${ENTRY_POINT}:ro -v $PWD:/home/prj/$(basename ${PWD})"
+VOLUMES="${VOLUMES} -v /tmp/.X11-unix:/tmp/.X11-unix -v /dev/shm:/dev/shm"
+VOLUMES="${VOLUMES} -v $HOME/pch/PyCharm2016.1:/home/$USER/.PyCharm2016.1"
+VOLUMES="${VOLUMES} -v $HOME/pch/java:/home/$USER/.java"
+
+docker run --rm -ti --entrypoint=${ENTRY_POINT} ${VOLUMES} -e DISPLAY=$DISPLAY approximator/pycharm
+rm ${ENTRY_POINT}
+# xhost local:root
