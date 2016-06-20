@@ -35,7 +35,8 @@ RUN apt-get update \
         wx2.8-i18n              \
         xvfb                    \
  && apt-get clean               \
- && rm -rf /var/lib/apt/lists/  \
- && pip install pyscreenshot pyvirtualdisplay easyprocess -V
-
-ADD take_screenshot.sh /
+ && pip install pyscreenshot pyvirtualdisplay easyprocess -V \
+                                                             \
+ && cd /tmp/               && find . -delete                 \
+ && cd /var/lib/apt/lists/ && find . -delete                 \
+ && cd /var/tmp/           && find . -delete

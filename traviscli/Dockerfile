@@ -9,9 +9,12 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     ruby-dev                              \
  && ruby -v                               \
  && apt-get clean                         \
- && rm -rf /var/lib/apt/lists/            \
                                           \
- && gem install travis --no-rdoc --no-ri
+ && gem install travis --no-rdoc --no-ri  \
+                                          \
+ && cd /tmp/               && find . -delete \
+ && cd /var/lib/apt/lists/ && find . -delete \
+ && cd /var/tmp/           && find . -delete
 
 ENV TRAVIS_CONFIG_PATH /travis
 WORKDIR /repo
