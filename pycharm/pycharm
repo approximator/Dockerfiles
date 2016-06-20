@@ -16,6 +16,6 @@ VOLUMES="-v ${ENTRY_POINT}:${ENTRY_POINT}:ro -v $PWD:$PWD"
 VOLUMES="${VOLUMES} -v /tmp/.X11-unix:/tmp/.X11-unix -v /dev/shm:/dev/shm"
 VOLUMES="${VOLUMES} -v $HOME/dock/pych:/home/$USER"
 
-docker run --rm -ti --entrypoint=${ENTRY_POINT} ${VOLUMES} -e DISPLAY=$DISPLAY approximator/pycharm
+docker run --rm --entrypoint=${ENTRY_POINT} ${VOLUMES} -e DISPLAY=$DISPLAY approximator/pycharm
 rm ${ENTRY_POINT}
 # xhost local:root
