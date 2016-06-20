@@ -16,8 +16,6 @@ script:
   - docker build -t $IMAGE_TAG .
 
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker tag $IMAGE_TAG $DOCKER_USERNAME/$IMAGE_TAG:$VERSION;
-    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push $DOCKER_USERNAME/$IMAGE_TAG:$VERSION;
-    fi
+  - docker tag $IMAGE_TAG $DOCKER_USERNAME/$IMAGE_TAG:$VERSION
+  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker push $DOCKER_USERNAME/$IMAGE_TAG:$VERSION
