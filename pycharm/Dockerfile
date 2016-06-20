@@ -10,6 +10,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     openjdk-8-jre              \
     python                     \
     python-pip                 \
+    python-setuptools          \
     wget                       \
  && apt-get clean              \
  && rm -rf /var/lib/apt/lists/ \
