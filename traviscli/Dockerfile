@@ -10,7 +10,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
  && ruby -v                               \
  && apt-get clean                         \
                                           \
- && gem install travis --no-rdoc --no-ri  \
+ && gem install travis -v 1.8.2 --no-rdoc --no-ri  \
                                           \
  && cd /tmp/               && find . -delete \
  && cd /var/lib/apt/lists/ && find . -delete \
