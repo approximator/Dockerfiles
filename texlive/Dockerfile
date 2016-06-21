@@ -33,4 +33,7 @@ RUN echo "deb http://archive.ubuntu.com/ubuntu wily multiverse" | tee -a /etc/ap
  && pip3 install -U pip            \
  && pip3 install -U numpy jupyter  \
  && apt-get clean                  \
- && rm -rf /var/lib/apt/lists/
+                                   \
+ && cd /tmp/               && find . -delete \
+ && cd /var/lib/apt/lists/ && find . -delete \
+ && cd /var/tmp/           && find . -delete

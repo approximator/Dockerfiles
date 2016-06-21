@@ -1,0 +1,17 @@
+FROM approximator/qt:5.6.1
+MAINTAINER alex@nls.la
+
+RUN cd /tmp                                                                \
+ && git clone -b v1.4.0 git://code.qt.io/qt-labs/qbs.git                    \
+ && git clone https://github.com/NixOS/patchelf.git patchelf               \
+ && qmake -r qbs/qbs.pro                                                   \
+ && make -j5                                                               \
+ && make install                                                           \
+                                                                           \
+ && cd /tmp                                                                \
+ && cd patchelf && ./bootstrap.sh && ./configure                           \
+ && make -j5 && make install                                               \
+                                                                           \
+ && cd /tmp/               && find . -delete                               \
+ && cd /var/lib/apt/lists/ && find . -delete                               \
+ && cd /var/tmp/           && find . -delete
