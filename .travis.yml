@@ -9,6 +9,8 @@ env:
   - IMAGE=traviscli IMAGE_TAG=traviscli VERSION=1.8.2         DOCKERFILE=Dockerfile               LATEST=yes
   - IMAGE=qbs       IMAGE_TAG=qbs       VERSION=1.4.0.Qt5.6.1 DOCKERFILE=Dockerfile_1.4.0.Qt5.6.1 LATEST=no
   - IMAGE=qbs       IMAGE_TAG=qbs       VERSION=1.4.0.Qt5.7.0 DOCKERFILE=Dockerfile_1.4.0.Qt5.7.0 LATEST=no
+  - IMAGE=qbs       IMAGE_TAG=qbs       VERSION=1.4.2.Qt5.6.1 DOCKERFILE=Dockerfile_1.4.2.Qt5.6.1 LATEST=no
+  - IMAGE=qbs       IMAGE_TAG=qbs       VERSION=1.4.2.Qt5.7.0 DOCKERFILE=Dockerfile_1.4.2.Qt5.7.0 LATEST=no
   - IMAGE=qbs       IMAGE_TAG=qbs       VERSION=1.5.0.Qt5.6.1 DOCKERFILE=Dockerfile_1.5.0.Qt5.6.1 LATEST=no
   - IMAGE=qbs       IMAGE_TAG=qbs       VERSION=1.5.0.Qt5.7.0 DOCKERFILE=Dockerfile_1.5.0.Qt5.7.0 LATEST=no
   - IMAGE=qbs       IMAGE_TAG=qbs       VERSION=1.5.1.Qt5.6.1 DOCKERFILE=Dockerfile_1.5.1.Qt5.6.1 LATEST=no
