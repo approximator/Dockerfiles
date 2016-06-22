@@ -2,8 +2,8 @@
 
 ## qt
 
-Currently there are two versions of Qt: **5.6.1** and **5.7.0** can be pulled
-as: `docker pull approximator/qt:5.6.1` and `docker pull approximator/qt:5.6.1`
+Currently there are two versions of Qt: **5.6.1** and **5.7.0** that can be pulled
+as: `docker pull approximator/qt:5.6.1` and `docker pull approximator/qt:5.7.0`
 
 ## qbs
 
@@ -12,13 +12,16 @@ Several versions of **qbs** with different versions of Qt.
 ## qtcreator
 
 Several version of **QtCreator** based on **qt:5.6.1** image.
-Use `qtcreator/qtcreator` script to star **qtcreator** inside the docker.
+Use `qtcreator/qtcreator` script to start **qtcreator** inside the docker.
 
 Note: current `$PWD` will be mounted to the container.
 
 ## qttest
 
 Clean ubuntu with **X11** libs installed to allow Qt applications running.
+
+See an example of screenshot taking using this image:
+https://github.com/approximator/FlightGear_Autopilot/blob/devel/.travis.yml
 
 ## Pycharm
 
