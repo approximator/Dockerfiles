@@ -16,7 +16,7 @@ env:
   - IMAGE=qbs       IMAGE_TAG=qbs       VERSION=1.5.1.Qt5.6.1 DOCKERFILE=Dockerfile_1.5.1.Qt5.6.1 LATEST=no
   - IMAGE=qbs       IMAGE_TAG=qbs       VERSION=1.5.1.Qt5.7.0 DOCKERFILE=Dockerfile_1.5.1.Qt5.7.0 LATEST=yes
   - IMAGE=qttest    IMAGE_TAG=qttest    VERSION=15.10         DOCKERFILE=Dockerfile               LATEST=yes
-  - IMAGE=texlive   IMAGE_TAG=texlive   VERSION=15.10         DOCKERFILE=Dockerfile               LATEST=yes
+  - IMAGE=jupyter   IMAGE_TAG=jupyter   VERSION=15.10         DOCKERFILE=Dockerfile               LATEST=yes
   - IMAGE=pycharm   IMAGE_TAG=pycharm   VERSION=2016.1.4      DOCKERFILE=Dockerfile               LATEST=yes
 
 script:
