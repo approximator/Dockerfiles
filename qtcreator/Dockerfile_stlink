@@ -1,0 +1,22 @@
+FROM approximator/qtcreator:4.0.2Qt5.7.0
+MAINTAINER alex@nls.la
+
+RUN apt-get update                                 \
+ && apt-get purge -y gdb                           \
+ && apt-get install --no-install-recommends -y     \
+        dh-autoreconf                              \
+        gcc-arm-none-eabi                          \
+        gdb-arm-none-eabi                          \
+        libusb-1.0.0-dev                           \
+                                                   \
+ && cd /tmp/                                       \
+ && git clone https://github.com/texane/stlink.git \
+ && cd stlink                                      \
+ && cmake -DCMAKE_BUILD_TYPE=Release .             \
+ && make -j4                                       \
+ && make install                                   \
+                                                   \
+ && apt-get clean                                  \
+ && cd /tmp/               && find . -delete       \
+ && cd /var/lib/apt/lists/ && find . -delete       \
+ && cd /var/tmp/           && find . -delete

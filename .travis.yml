@@ -21,6 +21,7 @@ env:
   - IMAGE=jupyter   IMAGE_TAG=jupyter   VERSION=15.10         DOCKERFILE=Dockerfile               LATEST=yes
   - IMAGE=pycharm   IMAGE_TAG=pycharm   VERSION=2016.2        DOCKERFILE=Dockerfile               LATEST=yes
   - IMAGE=pycharm   IMAGE_TAG=pycharm   VERSION=2016.1.4      DOCKERFILE=Dockerfile_2016.1.4      LATEST=no
+  - IMAGE=qtcreator IMAGE_TAG=qtcreator VERSION=stlink        DOCKERFILE=Dockerfile_stlink        LATEST=no
 
 script:
   # build images
