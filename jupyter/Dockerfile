@@ -37,3 +37,5 @@ RUN echo "deb http://archive.ubuntu.com/ubuntu wily multiverse" | tee -a /etc/ap
  && cd /tmp/               && find . -delete \
  && cd /var/lib/apt/lists/ && find . -delete \
  && cd /var/tmp/           && find . -delete
+
+ EXPOSE 8888

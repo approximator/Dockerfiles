@@ -1,0 +1,26 @@
+FROM ubuntu:16.04
+MAINTAINER alex@nls.la
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update                              \
+ && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y  \
+    ca-certificates   \
+    g++               \
+    git               \
+    libbz2-dev        \
+    libpcre3-dev      \
+    make              \
+    python            \
+                      \
+ && cd /tmp                                                                    \
+ && git clone -b 1.74 https://github.com/danmar/cppcheck.git                   \
+                                                                               \
+ && cd /tmp/cppcheck                                                           \
+ && make -j5 SRCDIR=build CFGDIR=cfg HAVE_RULES=yes                            \
+         CXXFLAGS="-O2 -DNDEBUG -Wall -Wno-sign-compare -Wno-unused-function"  \
+ && make install                                                               \
+                                                                               \
+ && apt-get purge -y make g++ git                                              \
+ && apt-get clean                                                              \
+ && cd /tmp/               && find . -delete                                   \
+ && cd /var/lib/apt/lists/ && find . -delete                                   \
+ && cd /var/tmp/           && find . -delete
