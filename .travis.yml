@@ -17,7 +17,8 @@ env:
   - IMAGE=qbs       IMAGE_TAG=qbs       VERSION=1.5.1.Qt5.7.0 DOCKERFILE=Dockerfile_1.5.1.Qt5.7.0 LATEST=yes
   - IMAGE=qttest    IMAGE_TAG=qttest    VERSION=15.10         DOCKERFILE=Dockerfile               LATEST=yes
   - IMAGE=jupyter   IMAGE_TAG=jupyter   VERSION=15.10         DOCKERFILE=Dockerfile               LATEST=yes
-  - IMAGE=pycharm   IMAGE_TAG=pycharm   VERSION=2016.1.4      DOCKERFILE=Dockerfile               LATEST=yes
+  - IMAGE=pycharm   IMAGE_TAG=pycharm   VERSION=2016.2        DOCKERFILE=Dockerfile               LATEST=yes
+  - IMAGE=pycharm   IMAGE_TAG=pycharm   VERSION=2016.1.4      DOCKERFILE=Dockerfile_2016.1.4      LATEST=no
 
 script:
   # build images
