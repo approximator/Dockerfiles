@@ -7,6 +7,8 @@ RUN apt-get update                                 \
         dh-autoreconf                              \
         gcc-arm-none-eabi                          \
         gdb-arm-none-eabi                          \
+        libnewlib-dev                              \
+        libstdc++-arm-none-eabi-newlib             \
         libusb-1.0.0-dev                           \
                                                    \
  && cd /tmp/                                       \

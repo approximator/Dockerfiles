@@ -18,11 +18,10 @@ chown $USER:$USER /home/$USER
 EOF
 
 chmod +x ${ENTRY_POINT}
-VOLUMES="-v $HOME/dock/qtcreator:/home/$USER"
-VOLUMES="${VOLUMES} -v ${ENTRY_POINT}:${ENTRY_POINT}:ro -v $PWD:$PWD"
+VOLUMES="-v ${ENTRY_POINT}:${ENTRY_POINT}:ro -v $PWD:$PWD"
 VOLUMES="${VOLUMES} -v /tmp/.X11-unix:/tmp/.X11-unix -v /dev/shm:/dev/shm"
+if [ "/home/$USER" != "$PWD" ]; then
+    VOLUMES="${VOLUMES} -v $HOME/dock/qtcreator:/home/$USER"
+fi
 
 docker run -d --entrypoint=${ENTRY_POINT} ${VOLUMES} -e DISPLAY=$DISPLAY approximator/qtcreator:$QT_CREATOR_VERSION
-# rm ${ENTRY_POINT}
-# xhost local:root
-# docker exec -it goofy_turing /bin/bash
