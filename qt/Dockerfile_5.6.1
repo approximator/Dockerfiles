@@ -1,6 +1,8 @@
 FROM ubuntu:16.04
 MAINTAINER alex@nls.la
 
+ENV QTDIR="/usr"
+
 RUN DEBIAN_FRONTEND=noninteractive apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
     "^libxcb.*"                            \
@@ -45,11 +47,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     python                                 \
     ruby                                   \
     wget                                   \
- && apt-get clean
-
-ENV QTDIR="/usr"
-
-RUN cd /tmp                                                                    \
+ && apt-get clean                          \
+ && cd /tmp                                                                    \
  && wget -c http://download.qt.io/official_releases/qt/5.6/5.6.1/single/qt-everywhere-opensource-src-5.6.1.tar.gz \
                                                                                \
  && mkdir /tmp/qt-build && cd /tmp/qt-build                                    \
@@ -74,7 +73,6 @@ RUN cd /tmp                                                                    \
                 -icu                                                           \
                 -no-nis                                                        \
  && make -j5                                                                   \
- && make docs                                                                  \
  && make install                                                               \
                                                                                \
  && cd /tmp/               && find . -delete                                   \
