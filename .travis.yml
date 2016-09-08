@@ -4,34 +4,20 @@ services:
 env:
   # Unfortunately, qtcreator and qt can't be built on travis-ci
   # due to resources limit
-  # - IMAGE=Qt IMAGE_TAG=approximator/qt
-  # - IMAGE=QtCreator IMAGE_TAG=approximator/qtcreator
-  - IMAGE=cppcheck  IMAGE_TAG=cppcheck  VERSION=1.75          DOCKERFILE=Dockerfile               LATEST=yes
-  - IMAGE=cppcheck  IMAGE_TAG=cppcheck  VERSION=1.74          DOCKERFILE=Dockerfile_1.74          LATEST=no
-  - IMAGE=traviscli IMAGE_TAG=traviscli VERSION=1.8.2         DOCKERFILE=Dockerfile               LATEST=yes
-  - IMAGE=qbs       IMAGE_TAG=qbs       VERSION=1.4.0.Qt5.6.1 DOCKERFILE=Dockerfile_1.4.0.Qt5.6.1 LATEST=no
-  - IMAGE=qbs       IMAGE_TAG=qbs       VERSION=1.4.0.Qt5.7.0 DOCKERFILE=Dockerfile_1.4.0.Qt5.7.0 LATEST=no
-  - IMAGE=qbs       IMAGE_TAG=qbs       VERSION=1.4.2.Qt5.6.1 DOCKERFILE=Dockerfile_1.4.2.Qt5.6.1 LATEST=no
-  - IMAGE=qbs       IMAGE_TAG=qbs       VERSION=1.4.2.Qt5.7.0 DOCKERFILE=Dockerfile_1.4.2.Qt5.7.0 LATEST=no
-  - IMAGE=qbs       IMAGE_TAG=qbs       VERSION=1.5.0.Qt5.6.1 DOCKERFILE=Dockerfile_1.5.0.Qt5.6.1 LATEST=no
-  - IMAGE=qbs       IMAGE_TAG=qbs       VERSION=1.5.0.Qt5.7.0 DOCKERFILE=Dockerfile_1.5.0.Qt5.7.0 LATEST=no
-  - IMAGE=qbs       IMAGE_TAG=qbs       VERSION=1.5.1.Qt5.6.1 DOCKERFILE=Dockerfile_1.5.1.Qt5.6.1 LATEST=no
-  - IMAGE=qbs       IMAGE_TAG=qbs       VERSION=1.5.1.Qt5.7.0 DOCKERFILE=Dockerfile_1.5.1.Qt5.7.0 LATEST=yes
-  - IMAGE=qttest    IMAGE_TAG=qttest    VERSION=15.10         DOCKERFILE=Dockerfile               LATEST=yes
-  - IMAGE=jupyter   IMAGE_TAG=jupyter   VERSION=15.10         DOCKERFILE=Dockerfile               LATEST=yes
-  - IMAGE=pycharm   IMAGE_TAG=pycharm   VERSION=2016.2        DOCKERFILE=Dockerfile               LATEST=yes
-  - IMAGE=pycharm   IMAGE_TAG=pycharm   VERSION=2016.1.4      DOCKERFILE=Dockerfile_2016.1.4      LATEST=no
-  - IMAGE=qtcreator IMAGE_TAG=qtcreator VERSION=stlink        DOCKERFILE=Dockerfile_stlink        LATEST=no
+  # - IMAGE=qt
+  # - IMAGE=qtcreator
+  - IMAGE=cppcheck      WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/cppcheck/bYLoFZs4A5is__cy6ENxVUd69_k=
+  - IMAGE=traviscli     WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/traviscli/-EyEPcISuXT3ZKruIVYqk6l4IsA=
+  - IMAGE=qbs           WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/qbs/YAv98VYpn2tF829aRSbGUp3knIs=
+  - IMAGE=qttest        WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/qttest/sGTa1LQ5hd_Ef9Z4eoOYrAFfo3I=
+  - IMAGE=jupyter       WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/jupyter/D0oYuf7TdKecFpa08pG-cUrS8x0=
+  - IMAGE=pycharm       WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/pycharm/g-6QUo2PiO3EErtM2i_MQ6PztbE=
+
+addons:
+  apt:
+    packages:
+      - httpie
 
 script:
   # build images
-  - cd $IMAGE
-  - docker build -f $DOCKERFILE -t $DOCKER_USERNAME/$IMAGE_TAG:$VERSION .
-
-after_success:
-  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker push $DOCKER_USERNAME/$IMAGE_TAG:$VERSION
-  - if [ "$LATEST" = "yes" ];then
-    docker tag $DOCKER_USERNAME/$IMAGE_TAG:$VERSION $DOCKER_USERNAME/$IMAGE_TAG:latest;
-    docker push $DOCKER_USERNAME/$IMAGE_TAG:latest;
-    fi
+  - ./build.sh $IMAGE
