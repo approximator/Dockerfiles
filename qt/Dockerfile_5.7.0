@@ -79,3 +79,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
  && cd /tmp/               && find . -delete                                   \
  && cd /var/lib/apt/lists/ && find . -delete                                   \
  && cd /var/tmp/           && find . -delete
+
+ARG BUILD_DATE
+ARG VCS_REF
+LABEL org.label-schema.build-date=$BUILD_DATE                                  \
+      org.label-schema.vcs-ref=$VCS_REF                                        \
+      org.label-schema.vcs-type="git"                                          \
+      org.label-schema.vcs-url="https://github.com/approximator/Dockerfiles"
