@@ -38,4 +38,11 @@ RUN echo "deb http://archive.ubuntu.com/ubuntu wily multiverse" | tee -a /etc/ap
  && cd /var/lib/apt/lists/ && find . -delete \
  && cd /var/tmp/           && find . -delete
 
- EXPOSE 8888
+EXPOSE 8888
+
+ARG BUILD_DATE
+ARG VCS_REF
+LABEL org.label-schema.build-date=$BUILD_DATE                                  \
+      org.label-schema.vcs-ref=$VCS_REF                                        \
+      org.label-schema.vcs-type="git"                                          \
+      org.label-schema.vcs-url="https://github.com/approximator/Dockerfiles"
