@@ -1,8 +1,12 @@
 #!/bin/bash
 
-DOCKER_EMAIL=${DOCKER_EMAIL:?}
-DOCKER_USERNAME=${DOCKER_USERNAME:?}
-DOCKER_PASSWORD=${DOCKER_PASSWORD:?}
+: ${PUSH_TO_DOCKER_HUB:=true}
+
+if $PUSH_TO_DOCKER_HUB ; then
+    DOCKER_EMAIL=${DOCKER_EMAIL:?}
+    DOCKER_USERNAME=${DOCKER_USERNAME:?}
+    DOCKER_PASSWORD=${DOCKER_PASSWORD:?}
+fi
 
 SCRIPT_DIR=$(cd $(dirname $0) && pwd)
 
@@ -70,8 +74,10 @@ for image in "${images[@]}"; do
             continue
         fi
 
-        docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-        docker push "approximator/$image:$version"
+        if $PUSH_TO_DOCKER_HUB ; then
+            docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+            docker push "approximator/$image:$version"
+        fi
     done
 
     if [ ! -z "$WEBHOOK_URL" ]; then
