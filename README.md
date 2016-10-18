@@ -36,6 +36,12 @@ Note: current `$PWD` will be mounted to the container.
 [![](https://images.microbadger.com/badges/version/approximator/cppcheck.svg)](https://hub.docker.com/r/approximator/cppcheck/tags/)
 [![](https://images.microbadger.com/badges/commit/approximator/cppcheck.svg)](http://microbadger.com/images/approximator/cppcheck)
 
+## clang format
+
+[![](https://images.microbadger.com/badges/image/approximator/clangformat.svg)](https://hub.docker.com/r/approximator/clangformat/)
+[![](https://images.microbadger.com/badges/version/approximator/clangformat.svg)](https://hub.docker.com/r/approximator/clangformat/tags/)
+[![](https://images.microbadger.com/badges/commit/approximator/clangformat.svg)](http://microbadger.com/images/approximator/clangformat)
+
 ## qttest
 
 [![](https://images.microbadger.com/badges/image/approximator/qttest.svg)](https://hub.docker.com/r/approximator/qttest/)
