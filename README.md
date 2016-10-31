@@ -4,6 +4,7 @@
 
 ## qt
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/approximator/qt.svg)](https://hub.docker.com/r/approximator/qt/)
 [![](https://images.microbadger.com/badges/image/approximator/qt.svg)](https://hub.docker.com/r/approximator/qt/)
 [![](https://images.microbadger.com/badges/version/approximator/qt.svg)](https://hub.docker.com/r/approximator/qt/tags/)
 [![](https://images.microbadger.com/badges/commit/approximator/qt.svg)](http://microbadger.com/images/approximator/qt)
@@ -13,6 +14,7 @@ as: `docker pull approximator/qt:5.6.1` and `docker pull approximator/qt:5.7.0`
 
 ## qbs
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/approximator/qbs.svg)](https://hub.docker.com/r/approximator/qbs/)
 [![](https://images.microbadger.com/badges/image/approximator/qbs.svg)](https://hub.docker.com/r/approximator/qbs/)
 [![](https://images.microbadger.com/badges/version/approximator/qbs.svg)](https://hub.docker.com/r/approximator/qbs/tags/)
 [![](https://images.microbadger.com/badges/commit/approximator/qbs.svg)](http://microbadger.com/images/approximator/qbs)
@@ -21,6 +23,7 @@ Several versions of **qbs** with different versions of Qt.
 
 ## qtcreator
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/approximator/qtcreator.svg)](https://hub.docker.com/r/approximator/qtcreator/)
 [![](https://images.microbadger.com/badges/image/approximator/qtcreator.svg)](https://hub.docker.com/r/approximator/qtcreator/)
 [![](https://images.microbadger.com/badges/version/approximator/qtcreator.svg)](https://hub.docker.com/r/approximator/qbs/qtcreator/)
 [![](https://images.microbadger.com/badges/commit/approximator/qtcreator.svg)](http://microbadger.com/images/approximator/qtcreator)
@@ -32,18 +35,21 @@ Note: current `$PWD` will be mounted to the container.
 
 ## cppcheck
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/approximator/cppcheck.svg)](https://hub.docker.com/r/approximator/cppcheck/)
 [![](https://images.microbadger.com/badges/image/approximator/cppcheck.svg)](https://hub.docker.com/r/approximator/cppcheck/)
 [![](https://images.microbadger.com/badges/version/approximator/cppcheck.svg)](https://hub.docker.com/r/approximator/cppcheck/tags/)
 [![](https://images.microbadger.com/badges/commit/approximator/cppcheck.svg)](http://microbadger.com/images/approximator/cppcheck)
 
 ## clang format
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/approximator/clangformat.svg)](https://hub.docker.com/r/approximator/clangformat/)
 [![](https://images.microbadger.com/badges/image/approximator/clangformat.svg)](https://hub.docker.com/r/approximator/clangformat/)
 [![](https://images.microbadger.com/badges/version/approximator/clangformat.svg)](https://hub.docker.com/r/approximator/clangformat/tags/)
 [![](https://images.microbadger.com/badges/commit/approximator/clangformat.svg)](http://microbadger.com/images/approximator/clangformat)
 
 ## qttest
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/approximator/qttest.svg)](https://hub.docker.com/r/approximator/qttest/)
 [![](https://images.microbadger.com/badges/image/approximator/qttest.svg)](https://hub.docker.com/r/approximator/qttest/)
 [![](https://images.microbadger.com/badges/version/approximator/qttest.svg)](https://hub.docker.com/r/approximator/qttest/tags/)
 [![](https://images.microbadger.com/badges/commit/approximator/qttest.svg)](http://microbadger.com/images/approximator/qttest)
@@ -55,6 +61,7 @@ https://github.com/approximator/FlightGear_Autopilot/blob/devel/.travis.yml
 
 ## Pycharm
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/approximator/pycharm.svg)](https://hub.docker.com/r/approximator/pycharm/)
 [![](https://images.microbadger.com/badges/image/approximator/pycharm.svg)](https://hub.docker.com/r/approximator/pycharm/)
 [![](https://images.microbadger.com/badges/version/approximator/pycharm.svg)](https://hub.docker.com/r/approximator/pycharm/tags/)
 [![](https://images.microbadger.com/badges/commit/approximator/pycharm.svg)](http://microbadger.com/images/approximator/pycharm)
