@@ -44,7 +44,7 @@ function build {
     fi
 
     echo "Building approximator/$image:$VERSION ..."
-    docker build --build-arg VCS_REF=`git rev-parse --short HEAD` --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` -f $FILE -t approximator/$image:$VERSION . &> /tmp/dockerbuild_$image.$VERSION.txt &
+    docker build --build-arg VCS_REF=`git rev-parse --short HEAD` --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` -f $FILE -t approximator/$image:$VERSION .. &> /tmp/dockerbuild_$image.$VERSION.txt &
     pid=$!
     while ps -p $pid >/dev/null
     do

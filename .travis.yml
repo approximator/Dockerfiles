@@ -12,7 +12,7 @@ env:
   - IMAGE=qttest        WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/qttest/sGTa1LQ5hd_Ef9Z4eoOYrAFfo3I=
   - IMAGE=jupyter       WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/jupyter/D0oYuf7TdKecFpa08pG-cUrS8x0=
   - IMAGE=pycharm       WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/pycharm/g-6QUo2PiO3EErtM2i_MQ6PztbE=
-  - IMAGE=clangformat   WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/clangformat/8ZwdCc7ogjC0FrqTRaOSjyPHrWM=
+  # - IMAGE=clangformat   WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/clangformat/8ZwdCc7ogjC0FrqTRaOSjyPHrWM=
 
 addons:
   apt:

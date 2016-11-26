@@ -2,7 +2,11 @@ FROM ubuntu:16.04
 MAINTAINER alex@nls.la
 
 ENV PYCHARM_HOME=/etc/pycharm
-RUN DEBIAN_FRONTEND=noninteractive apt-get update \
+ADD common/entrypoint.sh /usr/local/bin/entrypoint.sh
+ADD common/setup.sh /tmp/setup.sh
+
+RUN /tmp/setup.sh                                 \
+ && DEBIAN_FRONTEND=noninteractive apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
     gcc                        \
     git                        \
@@ -41,7 +45,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
  && cd /var/lib/apt/lists/ && find . -delete                                      \
  && cd /var/tmp/           && find . -delete
 
-ENTRYPOINT ["/etc/pycharm/bin/pycharm.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 ARG BUILD_DATE
 ARG VCS_REF

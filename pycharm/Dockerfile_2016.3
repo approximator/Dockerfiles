@@ -2,7 +2,11 @@ FROM ubuntu:16.04
 MAINTAINER alex@nls.la
 
 ENV PYCHARM_HOME=/etc/pycharm
-RUN DEBIAN_FRONTEND=noninteractive apt-get update \
+ADD common/entrypoint.sh /usr/local/bin/entrypoint.sh
+ADD common/setup.sh /tmp/setup.sh
+
+RUN /tmp/setup.sh                                 \
+ && DEBIAN_FRONTEND=noninteractive apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
     gcc                        \
     git                        \
@@ -22,7 +26,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     python3-dev                \
     python3-pip                \
     python3-setuptools         \
-    wget                       \
     zlib1g-dev                 \
  && apt-get clean              \
                                \
@@ -34,14 +37,14 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     wheel virtualenv           \
                                \
  && wget -P /tmp/ https://download.jetbrains.com/python/pycharm-community-2016.3.tar.gz \
- && mkdir ${PYCHARM_HOME}                                                         \
- && tar -xzvf /tmp/pycharm-community-2016.3.tar.gz -C ${PYCHARM_HOME} --strip=1   \
-                                                                                  \
- && cd /tmp/               && find . -delete                                      \
- && cd /var/lib/apt/lists/ && find . -delete                                      \
+ && mkdir ${PYCHARM_HOME}                                                       \
+ && tar -xzvf /tmp/pycharm-community-2016.3.tar.gz -C ${PYCHARM_HOME} --strip=1 \
+                                                                                \
+ && cd /tmp/               && find . -delete                                    \
+ && cd /var/lib/apt/lists/ && find . -delete                                    \
  && cd /var/tmp/           && find . -delete
 
-ENTRYPOINT ["/etc/pycharm/bin/pycharm.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 ARG BUILD_DATE
 ARG VCS_REF
