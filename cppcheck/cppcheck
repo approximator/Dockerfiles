@@ -1,24 +1,9 @@
 #!/bin/bash
 
-if [ $# = 1 ]; then
-   VERSION=$1
-fi
+: ${CPPCHECK_VERSION:="latest"}
+: ${ADDITIONAL_VOLUMES:=""}
 
-: ${VERSION:="latest"}
+VOLUMES="${ADDITIONAL_VOLUMES}"
+VOLUMES="${VOLUMES} -v $PWD:$PWD"
 
-ENTRY_POINT="/tmp/dock_cppcheck_entry_point.sh"
-
-cat > ${ENTRY_POINT} << EOF
-#!/bin/bash
-groupadd -g $(getent group $USER | cut -d: -f3) $USER
-useradd -g $USER -G sudo -N -u $UID $USER
-chown $USER:$USER /home/$USER
-/bin/su $USER -c "cppcheck $@"
-
-EOF
-
-chmod +x ${ENTRY_POINT}
-VOLUMES="-v $HOME/dock/cppcheck:/home/$USER"
-VOLUMES="${VOLUMES} -v ${ENTRY_POINT}:${ENTRY_POINT}:ro -v $PWD:$PWD"
-
-docker run --rm -ti --entrypoint=${ENTRY_POINT} ${VOLUMES} cppcheck:$VERSION
+docker run --rm -ti ${VOLUMES} -e HOST_USER_ID=$(id -u) -e HOST_USER_GROUP_ID=$(id -g) -e HOST_USER_NAME=$USER approximator/cppcheck:$CPPCHECK_VERSION cppcheck "$@"
