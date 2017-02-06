@@ -1,0 +1,8 @@
+#!/bin/bash
+
+: ${QBS_VERSION:="latest"}
+: ${ADDITIONAL_VOLUMES:=""}
+
+VOLUMES="${ADDITIONAL_VOLUMES} -v $PWD:$PWD"
+
+docker run --rm -ti ${VOLUMES} -e HOST_USER_ID=$(id -u) -e HOST_USER_GROUP_ID=$(id -g) -e HOST_USER_NAME=$USER approximator/qbs:$QBS_VERSION qbs "$@"
