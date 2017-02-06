@@ -1,7 +1,10 @@
 FROM approximator/qt:5.7.0
 MAINTAINER alex@nls.la
 
-RUN cd /tmp                                                                    \
+ADD common/entrypoint.sh /usr/local/bin/entrypoint.sh
+ADD common/setup.sh /tmp/setup.sh
+
+RUN /tmp/setup.sh && cd /tmp                                                   \
  && git clone --recursive -b v4.0.2 https://code.qt.io/qt-creator/qt-creator.git \
  && qmake -v                                                                   \
  && mkdir /tmp/qt-creator-build                                                \
@@ -13,6 +16,8 @@ RUN cd /tmp                                                                    \
  && cd /tmp/               && find . -delete                                   \
  && cd /var/lib/apt/lists/ && find . -delete                                   \
  && cd /var/tmp/           && find . -delete
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 ARG BUILD_DATE
 ARG VCS_REF
