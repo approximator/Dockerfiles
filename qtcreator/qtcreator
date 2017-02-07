@@ -1,27 +1,13 @@
 #!/bin/bash
 
-if [ $# = 1 ]; then
-   QT_CREATOR_VERSION=$1
-fi
+: ${QTCREATOR_VERSION:="latest"}
+: ${ADDITIONAL_VOLUMES:=""}
 
-: ${QT_CREATOR_VERSION:="latest"}
+VOLUMES="${ADDITIONAL_VOLUMES}"
 
-ENTRY_POINT="/tmp/dock_qtcreator_entry_point.sh"
-
-cat > ${ENTRY_POINT} << EOF
-#!/bin/bash
-groupadd -g $(getent group $USER | cut -d: -f3) $USER
-useradd -g $USER -G sudo -N -u $UID $USER
-chown $USER:$USER /home/$USER
-/bin/su $USER -c "qmake --version && qbs --version && /usr/bin/qtcreator"
-
-EOF
-
-chmod +x ${ENTRY_POINT}
-VOLUMES="-v ${ENTRY_POINT}:${ENTRY_POINT}:ro -v $PWD:$PWD"
-VOLUMES="${VOLUMES} -v /tmp/.X11-unix:/tmp/.X11-unix -v /dev/shm:/dev/shm"
+VOLUMES="${VOLUMES} -v $PWD:$PWD -v /tmp/.X11-unix:/tmp/.X11-unix -v /dev/shm:/dev/shm"
 if [ "/home/$USER" != "$PWD" ]; then
     VOLUMES="${VOLUMES} -v $HOME/dock/qtcreator:/home/$USER"
 fi
 
-docker run -d --entrypoint=${ENTRY_POINT} ${VOLUMES} -e DISPLAY=$DISPLAY approximator/qtcreator:$QT_CREATOR_VERSION
+docker run -d ${VOLUMES} -e DISPLAY=$DISPLAY -e HOST_USER_ID=$(id -u) -e HOST_USER_GROUP_ID=$(id -g) -e HOST_USER_NAME=$USER approximator/qtcreator:$QTCREATOR_VERSION /usr/bin/qtcreator "$@"
