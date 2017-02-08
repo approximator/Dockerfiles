@@ -1,11 +1,11 @@
-FROM approximator/qt:5.7.0
+FROM approximator/qt:5.7.1
 MAINTAINER alex@nls.la
 
 ADD common/entrypoint.sh /usr/local/bin/entrypoint.sh
 ADD common/setup.sh /tmp/setup.sh
 
 RUN /tmp/setup.sh && cd /tmp                                                   \
- && git clone -b v1.5.0 git://code.qt.io/qt-labs/qbs.git                       \
+ && git clone -b v1.7.1 git://code.qt.io/qt-labs/qbs.git                       \
  && git clone https://github.com/NixOS/patchelf.git patchelf                   \
  && qmake -r qbs/qbs.pro                                                       \
  && make -j5                                                                   \
@@ -18,8 +18,6 @@ RUN /tmp/setup.sh && cd /tmp                                                   \
  && cd /tmp/               && find . -delete                                   \
  && cd /var/lib/apt/lists/ && find . -delete                                   \
  && cd /var/tmp/           && find . -delete
-
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 ARG BUILD_DATE
 ARG VCS_REF
