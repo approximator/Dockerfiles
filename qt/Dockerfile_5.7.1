@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:16.10
 MAINTAINER alex@nls.la
 
 ENV QTDIR="/usr"
@@ -22,8 +22,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     libfontconfig1-dev                     \
     libfreetype6-dev                       \
     libglu1-mesa-dev                       \
-    libgstreamer-plugins-base0.10-dev      \
-    libgstreamer0.10-dev                   \
+    libgstreamer-plugins-base1.0-dev       \
+    libgstreamer1.0-0                      \
     libicu-dev                             \
     libnss3-dev                            \
     libpci-dev                             \
@@ -49,12 +49,13 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     wget                                   \
  && apt-get clean                          \
  && cd /tmp                                                                    \
- && wget -c http://download.qt.io/official_releases/qt/5.6/5.6.1/single/qt-everywhere-opensource-src-5.6.1.tar.gz \
+ && wget -c http://download.qt.io/official_releases/qt/5.7/5.7.1/single/qt-everywhere-opensource-src-5.7.1.tar.gz \
                                                                                \
  && mkdir /tmp/qt-build && cd /tmp/qt-build                                    \
- && tar xvf /tmp/qt-everywhere-opensource-src-5.6.1.tar.gz                     \
- && cd /tmp/qt-build/qt-everywhere-opensource-src-5.6.1                        \
+ && tar xvf /tmp/qt-everywhere-opensource-src-5.7.1.tar.gz                     \
+ && cd /tmp/qt-build/qt-everywhere-opensource-src-5.7.1                        \
                                                                                \
+ && ./configure --help                                                         \
  && ./configure -prefix "/usr"                                                 \
                 -confirm-license                                               \
                 -opensource                                                    \
@@ -71,7 +72,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
                 -qt-pcre                                                       \
                 -qt-harfbuzz                                                   \
                 -icu                                                           \
-                -no-nis                                                        \
  && make -j5                                                                   \
  && make install                                                               \
                                                                                \

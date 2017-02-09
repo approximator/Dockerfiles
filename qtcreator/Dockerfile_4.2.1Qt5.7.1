@@ -1,11 +1,11 @@
-FROM approximator/qt:5.6.1
+FROM approximator/qt:5.7.1
 MAINTAINER alex@nls.la
 
 ADD common/entrypoint.sh /usr/local/bin/entrypoint.sh
 ADD common/setup.sh /tmp/setup.sh
 
 RUN /tmp/setup.sh && cd /tmp                                                   \
- && git clone --recursive -b v4.0.2 https://code.qt.io/qt-creator/qt-creator.git \
+ && git clone --recursive -b v4.2.1 https://code.qt.io/qt-creator/qt-creator.git \
  && qmake -v                                                                   \
  && mkdir /tmp/qt-creator-build                                                \
  && cd qt-creator-build                                                        \

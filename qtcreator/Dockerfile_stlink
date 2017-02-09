@@ -1,4 +1,4 @@
-FROM approximator/qtcreator:4.0.2Qt5.7.0
+FROM approximator/qtcreator:latest
 MAINTAINER alex@nls.la
 
 RUN apt-get update                                 \
