@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:16.10
 
 ENV PYCHARM_HOME=/etc/pycharm
 ADD common/entrypoint.sh /usr/local/bin/entrypoint.sh
@@ -25,7 +25,6 @@ RUN /tmp/setup.sh                                 \
     python3-dev                \
     python3-pip                \
     python3-setuptools         \
-    wget                       \
     zlib1g-dev                 \
  && apt-get clean              \
                                \
@@ -36,12 +35,12 @@ RUN /tmp/setup.sh                                 \
  && pip3 install -U            \
     wheel virtualenv           \
                                \
- && wget -P /tmp/ https://download.jetbrains.com/python/pycharm-community-2016.2.3.tar.gz \
- && mkdir ${PYCHARM_HOME}                                                         \
- && tar -xzvf /tmp/pycharm-community-2016.2.3.tar.gz -C ${PYCHARM_HOME} --strip=1 \
-                                                                                  \
- && cd /tmp/               && find . -delete                                      \
- && cd /var/lib/apt/lists/ && find . -delete                                      \
+ && wget -P /tmp/ https://download.jetbrains.com/python/pycharm-community-2017.1.1.tar.gz \
+ && mkdir ${PYCHARM_HOME}                                                        \
+ && tar -xzvf /tmp/pycharm-community-2017.1.1.tar.gz -C ${PYCHARM_HOME} --strip=1\
+                                                                                 \
+ && cd /tmp/               && find . -delete                                     \
+ && cd /var/lib/apt/lists/ && find . -delete                                     \
  && cd /var/tmp/           && find . -delete
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
