@@ -1,0 +1,13 @@
+#!/bin/bash
+
+: ${DIGIKAM_VERSION:="latest"}
+: ${ADDITIONAL_VOLUMES:=""}
+
+PHOTOS_DIR="$1"
+
+VOLUMES="${ADDITIONAL_VOLUMES}"
+
+VOLUMES="${VOLUMES} -v /tmp/.X11-unix:/tmp/.X11-unix -v /dev/shm:/dev/shm -v $PHOTOS_DIR:/photos"
+VOLUMES="${VOLUMES} -v $PWD/digikam:/home/$USER"
+
+docker run -ti ${VOLUMES} -e DISPLAY=$DISPLAY -e HOST_USER_ID=$(id -u) -e HOST_USER_GROUP_ID=$(id -g) -e HOST_USER_NAME=$USER approximator/digikam:$DIGIKAM_VERSION "digikam"
