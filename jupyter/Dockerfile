@@ -1,5 +1,4 @@
 FROM ubuntu:yakkety
-MAINTAINER alex@nls.la
 
 RUN echo "deb http://archive.ubuntu.com/ubuntu yakkety multiverse" | tee -a /etc/apt/sources.list \
  && DEBIAN_FRONTEND=noninteractive apt update                             \
@@ -42,7 +41,8 @@ EXPOSE 8888
 
 ARG BUILD_DATE
 ARG VCS_REF
-LABEL org.label-schema.build-date=$BUILD_DATE                                  \
+LABEL maintainer=alex@nls.la                                                   \
+      org.label-schema.build-date=$BUILD_DATE                                  \
       org.label-schema.vcs-ref=$VCS_REF                                        \
       org.label-schema.vcs-type="git"                                          \
       org.label-schema.vcs-url="https://github.com/approximator/Dockerfiles"
