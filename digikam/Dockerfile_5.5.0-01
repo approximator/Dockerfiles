@@ -1,0 +1,22 @@
+FROM ubuntu:17.04
+
+ADD common/entrypoint.sh /usr/local/bin/entrypoint.sh
+ADD common/setup.sh /tmp/setup.sh
+
+RUN /tmp/setup.sh                                                              \
+ && DEBIAN_FRONTEND=noninteractive apt-get update                              \
+ && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y  \
+    digikam                                                                    \
+ && cd /tmp/               && find . -delete                                   \
+ && cd /var/lib/apt/lists/ && find . -delete                                   \
+ && cd /var/tmp/           && find . -delete
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+ARG BUILD_DATE
+ARG VCS_REF
+LABEL maintainer=alex@nls.la                                                   \
+      org.label-schema.build-date=$BUILD_DATE                                  \
+      org.label-schema.vcs-ref=$VCS_REF                                        \
+      org.label-schema.vcs-type="git"                                          \
+      org.label-schema.vcs-url="https://github.com/approximator/Dockerfiles"
