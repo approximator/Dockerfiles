@@ -14,6 +14,7 @@ env:
   - IMAGE=pycharm       WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/pycharm/g-6QUo2PiO3EErtM2i_MQ6PztbE=
   - IMAGE=clangformat   WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/clangformat/8ZwdCc7ogjC0FrqTRaOSjyPHrWM=
   - IMAGE=digikam
+  - IMAGE=keepassxc
 
 addons:
   apt:
