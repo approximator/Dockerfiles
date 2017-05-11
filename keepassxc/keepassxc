@@ -1,0 +1,14 @@
+#!/bin/bash
+
+: ${VERSION:="latest"}
+: ${ADDITIONAL_VOLUMES:=""}
+
+DATABASE_FILE=$(realpath "$1")
+filename=$(basename "$DATABASE_FILE")
+
+VOLUMES="${ADDITIONAL_VOLUMES}"
+VOLUMES="${VOLUMES} -v /tmp/.X11-unix:/tmp/.X11-unix -v /etc/machine-id:/etc/machine-id:ro -v /usr/share/X11/xkb:/usr/share/X11/xkb/:ro -v $DATABASE_FILE:/$filename"
+
+echo "Volumes: ${VOLUMES}"
+
+docker run --rm -ti ${VOLUMES} -e DISPLAY=$DISPLAY -e HOST_USER_ID=$(id -u) -e HOST_USER_GROUP_ID=$(id -g) -e HOST_USER_NAME=$USER approximator/keepassxc:$VERSION "keepassxc $filename"
