@@ -1,5 +1,4 @@
-FROM ubuntu:wily
-MAINTAINER alex@nls.la
+FROM ubuntu:17.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -11,13 +10,13 @@ RUN apt-get update \
         gir1.2-gtk-2.0          \
         imagemagick             \
         libdbus-1-3             \
-        libdouble-conversion1v5 \
+        libdouble-conversion1   \
         libegl1-mesa            \
         libfontconfig1          \
         libgl1-mesa-glx         \
         libharfbuzz0b           \
         libmtdev1               \
-        libpng12-0              \
+        libpng16-16             \
         libsm6                  \
         libstdc++6              \
         libx11-6                \
@@ -30,9 +29,10 @@ RUN apt-get update \
         python-matplotlib       \
         python-pillow           \
         python-pip              \
-        python-wxgtk2.8         \
+        python-wxgtk3.0         \
         python-wxtools          \
-        wx2.8-i18n              \
+        python-setuptools       \
+        wx3.0-i18n              \
         xvfb                    \
  && apt-get clean               \
  && pip install pyscreenshot pyvirtualdisplay easyprocess -V \
@@ -43,7 +43,8 @@ RUN apt-get update \
 
 ARG BUILD_DATE
 ARG VCS_REF
-LABEL org.label-schema.build-date=$BUILD_DATE                                  \
+LABEL maintainer=alex@nls.la                                                   \
+      org.label-schema.build-date=$BUILD_DATE                                  \
       org.label-schema.vcs-ref=$VCS_REF                                        \
       org.label-schema.vcs-type="git"                                          \
       org.label-schema.vcs-url="https://github.com/approximator/Dockerfiles"

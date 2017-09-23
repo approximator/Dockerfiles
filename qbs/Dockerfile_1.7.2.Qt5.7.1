@@ -1,10 +1,10 @@
-FROM approximator/qt:5.7.0
+FROM approximator/qt:5.7.1
 
 ADD common/entrypoint.sh /usr/local/bin/entrypoint.sh
 ADD common/setup.sh /tmp/setup.sh
 
 RUN /tmp/setup.sh && cd /tmp                                                   \
- && git clone -b v1.7.1 git://code.qt.io/qt-labs/qbs.git                       \
+ && git clone -b v1.7.2 git://code.qt.io/qt-labs/qbs.git                       \
  && git clone https://github.com/NixOS/patchelf.git patchelf                   \
  && qmake -r qbs/qbs.pro                                                       \
  && make -j5                                                                   \
