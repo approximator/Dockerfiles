@@ -10,7 +10,7 @@ fi
 
 grep $GROUP_ID /etc/group >> /dev/null
 [[ $? -eq 0 ]] || groupadd -g $GROUP_ID $USER_NAME
-useradd -G sudo -N -u $USER_ID $USER_NAME
+useradd -N -u $USER_ID $USER_NAME
 chown $USER_ID:$GROUP_ID /home/$USER_NAME
 
 export HOME=/home/$USER_NAME
