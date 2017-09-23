@@ -1,47 +1,44 @@
-FROM ubuntu:17.04
+FROM base/devel:latest
 
 ENV PYCHARM_HOME=/etc/pycharm
 ADD common/entrypoint.sh /usr/local/bin/entrypoint.sh
-ADD common/setup.sh /tmp/setup.sh
+ADD https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64 /usr/local/bin/gosu
 
-RUN /tmp/setup.sh                                 \
- && DEBIAN_FRONTEND=noninteractive apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
-    gcc                        \
-    git                        \
-    libfreetype6-dev           \
-    libxft-dev                 \
-    libxml2-dev                \
-    libxrender1                \
-    libxslt1-dev               \
-    libxtst6                   \
-    openjdk-8-jre              \
-    pkg-config                 \
-    python                     \
-    python-dev                 \
-    python-pip                 \
-    python-setuptools          \
-    python3                    \
-    python3-dev                \
-    python3-pip                \
-    python3-setuptools         \
-    zlib1g-dev                 \
- && apt-get clean              \
-                               \
- && pip3 install -U pip        \
- && pip2 install -U pip        \
- && pip install -U             \
-    wheel virtualenv           \
- && pip3 install -U            \
-    wheel virtualenv           \
-                               \
- && wget -P /tmp/ https://download-cf.jetbrains.com/python/pycharm-community-2017.2.2.tar.gz \
+RUN yes | pacman -Syu    \
+    gcc                  \
+    git                  \
+    freetype2            \
+    libxft               \
+    libxml2              \
+    libxrender           \
+    libxslt              \
+    libxtst              \
+    jdk8-openjdk         \
+    pkg-config           \
+    python2              \
+    python2-pip          \
+    python2-setuptools   \
+    python               \
+    python-pip           \
+    python-setuptools    \
+    zlib                 \
+    ca-certificates      \
+    wget                 \
+                         \
+ && pip install -U pip   \
+ && pip2 install -U pip  \
+ && pip2 install -U      \
+    wheel virtualenv     \
+ && pip install -U       \
+    wheel virtualenv     \
+                         \
+ && wget -P /tmp/ https://download.jetbrains.com/python/pycharm-community-2017.2.3.tar.gz \
  && mkdir ${PYCHARM_HOME}                                                        \
- && tar -xzvf /tmp/pycharm-community-2017.2.2.tar.gz -C ${PYCHARM_HOME} --strip=1\
-                                                                                 \
- && cd /tmp/               && find . -delete                                     \
- && cd /var/lib/apt/lists/ && find . -delete                                     \
- && cd /var/tmp/           && find . -delete
+ && tar -xzvf /tmp/pycharm-community-2017.2.3.tar.gz -C ${PYCHARM_HOME} --strip=1\
+ && chmod +x /usr/local/bin/gosu \
+ && find /tmp/ -delete \
+ && yes | pacman -Sc
+
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
