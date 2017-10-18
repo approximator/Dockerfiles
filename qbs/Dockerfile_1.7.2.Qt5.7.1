@@ -18,6 +18,8 @@ RUN /tmp/setup.sh && cd /tmp                                                   \
  && cd /var/lib/apt/lists/ && find . -delete                                   \
  && cd /var/tmp/           && find . -delete
 
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL maintainer=alex@nls.la                                                   \
