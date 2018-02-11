@@ -1,0 +1,51 @@
+FROM base/devel:latest
+
+ENV PYCHARM_HOME=/etc/pycharm
+ADD common/entrypoint.sh /usr/local/bin/entrypoint.sh
+ADD https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64 /usr/local/bin/gosu
+
+RUN yes | pacman -Syu    \
+    gcc                  \
+    git                  \
+    freetype2            \
+    libxft               \
+    libxml2              \
+    libxrender           \
+    libxslt              \
+    libxtst              \
+    jdk8-openjdk         \
+    pkg-config           \
+    python2              \
+    python2-pip          \
+    python2-setuptools   \
+    python               \
+    python-pip           \
+    python-setuptools    \
+    zlib                 \
+    ca-certificates      \
+    wget                 \
+                         \
+ && pip install -U pip   \
+ && pip2 install -U pip  \
+ && pip2 install -U      \
+    wheel virtualenv     \
+ && pip install -U       \
+    wheel virtualenv     \
+                         \
+ && wget -P /tmp/ https://download-cf.jetbrains.com/python/pycharm-community-2017.3.3.tar.gz \
+ && mkdir ${PYCHARM_HOME}                                                        \
+ && tar -xzvf /tmp/pycharm-community-2017.3.3.tar.gz -C ${PYCHARM_HOME} --strip=1\
+ && chmod +x /usr/local/bin/gosu \
+ && find /tmp/ -delete \
+ && yes | pacman -Sc
+
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+ARG BUILD_DATE
+ARG VCS_REF
+LABEL maintainer=alex@nls.la                                                   \
+      org.label-schema.build-date=$BUILD_DATE                                  \
+      org.label-schema.vcs-ref=$VCS_REF                                        \
+      org.label-schema.vcs-type="git"                                          \
+      org.label-schema.vcs-url="https://github.com/approximator/Dockerfiles"
