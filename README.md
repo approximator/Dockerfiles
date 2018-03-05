@@ -33,12 +33,6 @@ Use `qtcreator/qtcreator` script to start **qtcreator** inside the docker.
 
 Note: current `$PWD` will be mounted to the container.
 
-## cppcheck
-
-[![Docker Pulls](https://img.shields.io/docker/pulls/approximator/cppcheck.svg)](https://hub.docker.com/r/approximator/cppcheck/)
-[![](https://images.microbadger.com/badges/image/approximator/cppcheck.svg)](https://hub.docker.com/r/approximator/cppcheck/)
-[![](https://images.microbadger.com/badges/version/approximator/cppcheck.svg)](https://hub.docker.com/r/approximator/cppcheck/tags/)
-[![](https://images.microbadger.com/badges/commit/approximator/cppcheck.svg)](http://microbadger.com/images/approximator/cppcheck)
 
 ## clang format
 

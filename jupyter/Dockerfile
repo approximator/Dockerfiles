@@ -1,6 +1,6 @@
-FROM ubuntu:yakkety
+FROM ubuntu:xenial
 
-RUN echo "deb http://archive.ubuntu.com/ubuntu yakkety multiverse" | tee -a /etc/apt/sources.list \
+RUN echo "deb http://archive.ubuntu.com/ubuntu xenial multiverse" | tee -a /etc/apt/sources.list \
  && DEBIAN_FRONTEND=noninteractive apt update                             \
  && DEBIAN_FRONTEND=noninteractive apt install --no-install-recommends -y \
         biber                      \

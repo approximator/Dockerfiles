@@ -1,4 +1,4 @@
-FROM ubuntu:17.04
+FROM ubuntu:xenial
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -10,13 +10,13 @@ RUN apt-get update \
         gir1.2-gtk-2.0          \
         imagemagick             \
         libdbus-1-3             \
-        libdouble-conversion1   \
+        libdouble-conversion1v5 \
         libegl1-mesa            \
         libfontconfig1          \
         libgl1-mesa-glx         \
         libharfbuzz0b           \
         libmtdev1               \
-        libpng16-16             \
+        libpng12-0              \
         libsm6                  \
         libstdc++6              \
         libx11-6                \

@@ -1,4 +1,4 @@
-FROM ubuntu:16.10
+FROM ubuntu:xenial
 
 ADD common/entrypoint.sh /usr/local/bin/entrypoint.sh
 ADD common/setup.sh /tmp/setup.sh

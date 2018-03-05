@@ -6,7 +6,6 @@ env:
   # due to resources limit
   # - IMAGE=qt
   # - IMAGE=qtcreator
-  - IMAGE=cppcheck      WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/cppcheck/bYLoFZs4A5is__cy6ENxVUd69_k=
   - IMAGE=traviscli     WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/traviscli/-EyEPcISuXT3ZKruIVYqk6l4IsA=
   - IMAGE=qbs           WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/qbs/YAv98VYpn2tF829aRSbGUp3knIs=
   - IMAGE=qttest        WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/qttest/sGTa1LQ5hd_Ef9Z4eoOYrAFfo3I=

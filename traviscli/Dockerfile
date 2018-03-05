@@ -1,5 +1,4 @@
-FROM ubuntu:16.04
-MAINTAINER alex@nls.la
+FROM ubuntu:xenial
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
@@ -23,7 +22,8 @@ ENTRYPOINT ["/usr/local/bin/travis"]
 
 ARG BUILD_DATE
 ARG VCS_REF
-LABEL org.label-schema.build-date=$BUILD_DATE                                  \
+LABEL maintainer=alex@nls.la                                                   \
+      org.label-schema.build-date=$BUILD_DATE                                  \
       org.label-schema.vcs-ref=$VCS_REF                                        \
       org.label-schema.vcs-type="git"                                          \
       org.label-schema.vcs-url="https://github.com/approximator/Dockerfiles"
