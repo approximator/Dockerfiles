@@ -23,6 +23,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     libegl1-mesa-dev                       \
     libfontconfig1-dev                     \
     libfreetype6-dev                       \
+    libgl1-mesa-glx                        \
     libglib2.0-0                           \
     libglu1-mesa-dev                       \
     libgstreamer-plugins-base1.0-dev       \
@@ -82,7 +83,7 @@ RUN checkinstall -y                           \
     --pkgversion="5.10.1"                     \
     --pkgrelease="approximator1"              \
     --provides="qmake"                        \
-    --requires=""                             \
+    --requires="libgl1-mesa-glx"              \
     --pkgarch=$(dpkg --print-architecture)    \
     --pakdir=$PKGS_DIR                        \
     --nodoc                                   \
