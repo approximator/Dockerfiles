@@ -1,7 +1,7 @@
 FROM ubuntu:xenial
 
 ENV QTDIR="/usr"
-ENV PKGS_DIR="/pakages"
+ENV PKGS_DIR="/packages"
 RUN mkdir $PKGS_DIR
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update \
@@ -11,7 +11,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     bison                                  \
     ca-certificates                        \
     checkinstall                           \
-    cmake                                  \
     flex                                   \
     g++                                    \
     gdb                                    \
@@ -55,6 +54,25 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     wget
 
 WORKDIR /
+RUN wget https://cmake.org/files/v3.11/cmake-3.11.4.tar.gz
+RUN tar -xf cmake-3.11.4.tar.gz
+WORKDIR /cmake-3.11.4
+RUN ./bootstrap
+RUN make -j4
+RUN checkinstall -y                           \
+    --pkgname=cmake                           \
+    --pkgversion="3.11.4"                     \
+    --pkgrelease="xenial-approximator1"       \
+    --provides="cmake"                        \
+    --requires=""                             \
+    --pkgarch=$(dpkg --print-architecture)    \
+    --pakdir=$PKGS_DIR                        \
+    --nodoc                                   \
+    --backup=no                               \
+    --maintainer=alex@nls.la                  \
+    -D make install
+
+WORKDIR /
 RUN wget -c https://download.qt.io/official_releases/qt/5.10/5.10.1/single/qt-everywhere-src-5.10.1.tar.xz
 RUN mkdir qt-build && cd qt-build && tar xvf /qt-everywhere-src-5.10.1.tar.xz
 
@@ -81,7 +99,7 @@ RUN make -j4
 RUN checkinstall -y                           \
     --pkgname=qt                              \
     --pkgversion="5.10.1"                     \
-    --pkgrelease="approximator1"              \
+    --pkgrelease="xenial-approximator1"       \
     --provides="qmake"                        \
     --requires="libgl1-mesa-glx"              \
     --pkgarch=$(dpkg --print-architecture)    \
@@ -98,7 +116,7 @@ RUN make -j4
 RUN checkinstall -y                        \
     --pkgname=qbs                          \
     --pkgversion="1.10.1"                  \
-    --pkgrelease="approximator1"           \
+    --pkgrelease="xenial-approximator1"    \
     --provides="qbs"                       \
     --requires="libglib2.0-0"              \
     --pkgarch=$(dpkg --print-architecture) \
@@ -114,8 +132,8 @@ RUN ./bootstrap.sh && ./configure
 RUN make -j4
 RUN checkinstall -y                        \
     --pkgname=patchelf                     \
-    --pkgversion="1-master"                \
-    --pkgrelease="approximator1"           \
+    --pkgversion="1.0.0-master"            \
+    --pkgrelease="xenial-approximator1"    \
     --provides="patchelf"                  \
     --requires=""                          \
     --pkgarch=$(dpkg --print-architecture) \
@@ -124,6 +142,7 @@ RUN checkinstall -y                        \
     --backup=no                            \
     --maintainer=alex@nls.la               \
     -D make install
+
 
 RUN ls -lah /
 RUN ls -lah $PKGS_DIR

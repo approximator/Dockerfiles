@@ -3,7 +3,6 @@ FROM ubuntu:xenial
 RUN DEBIAN_FRONTEND=noninteractive apt update                             \
  && DEBIAN_FRONTEND=noninteractive apt install --no-install-recommends -y \
         ca-certificates            \
-        cmake                      \
         g++                        \
         gcc                        \
         libgl1-mesa-glx            \
@@ -17,7 +16,9 @@ RUN cd /tmp \
  && wget https://github.com/approximator/Dockerfiles/releases/download/qtv5.10.1/patchelf_0.10-1_amd64.deb \
  && wget https://github.com/approximator/Dockerfiles/releases/download/qtv5.10.1/qbs_1.10.1-approximator1_amd64.deb \
  && wget https://github.com/approximator/Dockerfiles/releases/download/qtv5.10.1/qt_5.10.1-approximator1_amd64.deb \
+ && wget https://github.com/approximator/Dockerfiles/releases/download/qtv5.10.1/cmake_3.11.4-xenial-approximator1_amd64.deb \
  && cd /usr/local/bin/ && wget -O gosu https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64 \
+ && dpkg -i /tmp/cmake_3.11.4-xenial-approximator1_amd64.deb \
  && dpkg -i /tmp/qt_5.10.1-approximator1_amd64.deb         \
  && dpkg -i /tmp/qbs_1.10.1-approximator1_amd64.deb        \
  && dpkg -i /tmp/patchelf_0.10-1_amd64.deb                 \
