@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:bionic
 
 ADD common/entrypoint.sh /usr/local/bin/entrypoint.sh
 ADD common/setup.sh /tmp/setup.sh
