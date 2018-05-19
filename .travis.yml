@@ -8,7 +8,6 @@ env:
   - IMAGE=jupyter       WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/jupyter/D0oYuf7TdKecFpa08pG-cUrS8x0=
   - IMAGE=pycharm       WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/pycharm/g-6QUo2PiO3EErtM2i_MQ6PztbE=
   - IMAGE=digikam
-  - IMAGE=keepassxc
 
 addons:
   apt:
