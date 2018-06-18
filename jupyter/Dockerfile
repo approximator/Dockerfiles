@@ -1,6 +1,6 @@
-FROM ubuntu:xenial
+FROM ubuntu:bionic
 
-RUN echo "deb http://archive.ubuntu.com/ubuntu xenial multiverse" | tee -a /etc/apt/sources.list \
+RUN echo "deb http://archive.ubuntu.com/ubuntu bionic multiverse" | tee -a /etc/apt/sources.list \
  && DEBIAN_FRONTEND=noninteractive apt update                             \
  && DEBIAN_FRONTEND=noninteractive apt install --no-install-recommends -y \
         biber                      \
@@ -29,10 +29,11 @@ RUN echo "deb http://archive.ubuntu.com/ubuntu xenial multiverse" | tee -a /etc/
         texlive-latex-recommended  \
         texlive-publishers         \
         texlive-xetex              \
- && pip3 install -U pip setuptools \
- && pip3 install -U numpy jupyter  \
- && apt-get clean                  \
                                    \
+ && pip3 install -U setuptools wheel \
+ && pip3 install -U numpy jupyter    \
+ && apt-get clean                    \
+                                     \
  && cd /tmp/               && find . -delete \
  && cd /var/lib/apt/lists/ && find . -delete \
  && cd /var/tmp/           && find . -delete
