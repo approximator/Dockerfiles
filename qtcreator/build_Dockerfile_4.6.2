@@ -1,0 +1,88 @@
+FROM approximator/qt
+
+ENV QTDIR="/usr"
+ENV PKGS_DIR="/pakages"
+RUN mkdir $PKGS_DIR
+WORKDIR /tmp
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
+    autoconf                               \
+    automake                               \
+    bison                                  \
+    ca-certificates                        \
+    checkinstall                           \
+    cmake                                  \
+    flex                                   \
+    g++                                    \
+    gdb                                    \
+    git                                    \
+    gperf                                  \
+    libasound2-dev                         \
+    libcap-dev                             \
+    libdbus-1-dev                          \
+    libegl1-mesa-dev                       \
+    libfontconfig1-dev                     \
+    libfreetype6-dev                       \
+    libgl1-mesa-glx                        \
+    libglib2.0-0                           \
+    libglu1-mesa-dev                       \
+    libgstreamer-plugins-base1.0-dev       \
+    libgstreamer1.0-0                      \
+    libicu-dev                             \
+    libnss3-dev                            \
+    libpci-dev                             \
+    libpulse-dev                           \
+    libssl-dev                             \
+    libudev-dev                            \
+    libx11-dev                             \
+    libx11-xcb-dev                         \
+    libxcb-glx0-dev                        \
+    libxcb1-dev                            \
+    libxcomposite-dev                      \
+    libxcursor-dev                         \
+    libxdamage-dev                         \
+    libxext-dev                            \
+    libxfixes-dev                          \
+    libxi-dev                              \
+    libxrandr-dev                          \
+    libxrender-dev                         \
+    libxslt-dev                            \
+    libxss-dev                             \
+    libxtst-dev                            \
+    perl                                   \
+    python                                 \
+    ruby                                   \
+    wget
+
+RUN git clone --recursive -b v4.6.2 https://code.qt.io/qt-creator/qt-creator.git
+RUN qmake -v
+RUN mkdir /tmp/qt-creator-build
+
+WORKDIR /tmp/qt-creator-build
+RUN cd /tmp/qt-creator-build && qmake -r ../qt-creator/qtcreator.pro
+RUN make -j5
+
+
+RUN checkinstall -y                           \
+    --pkgname=qtcreator                       \
+    --pkgversion="4.6.2"                      \
+    --pkgrelease="approximator1"              \
+    --provides="qtcreator"                    \
+    --requires=""                             \
+    --pkgarch=$(dpkg --print-architecture)    \
+    --pakdir=$PKGS_DIR                        \
+    --nodoc                                   \
+    --backup=no                               \
+    --maintainer=alex@nls.la                  \
+    -D make install INSTALL_ROOT=/usr
+
+
+
+ARG BUILD_DATE
+ARG VCS_REF
+LABEL maintainer=alex@nls.la                                                   \
+      org.label-schema.build-date=$BUILD_DATE                                  \
+      org.label-schema.vcs-ref=$VCS_REF                                        \
+      org.label-schema.vcs-type="git"                                          \
+      org.label-schema.vcs-url="https://github.com/approximator/Dockerfiles"

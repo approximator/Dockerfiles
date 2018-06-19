@@ -10,4 +10,4 @@ if [ "/home/$USER" != "$PWD" ]; then
     VOLUMES="${VOLUMES} -v $HOME/dock/qtcreator:/home/$USER"
 fi
 
-docker run -d ${VOLUMES} -e DISPLAY=$DISPLAY -e HOST_USER_ID=$(id -u) -e HOST_USER_GROUP_ID=$(id -g) -e HOST_USER_NAME=$USER approximator/qtcreator:$QTCREATOR_VERSION /usr/bin/qtcreator "$@"
+docker run -d ${VOLUMES} -e DISPLAY=$DISPLAY -e HOST_USER_ID=$(id -u) -e HOST_USER_GROUP_ID=$(id -g) -e HOST_USER_NAME=$USER approximator/qtcreator:$QTCREATOR_VERSION qtcreator "$@"
