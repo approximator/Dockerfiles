@@ -1,0 +1,23 @@
+FROM ubuntu:bionic
+
+ARG BUILD_DATE
+ARG VCS_REF
+ARG CONAN_CMD
+
+COPY conanfile.txt /conanfile/
+
+RUN apt-get update && apt-get install -y software-properties-common sudo       \
+      build-essential perl python python3 python3-pip git make cmake           \
+      libfontconfig1-dev libxcb1-dev libx11-dev libc6-dev libgl1-mesa-dev      \
+      '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev \
+ && pip3 install conan                                                         \
+ && conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan     \
+ && conan remote add approximator https://api.bintray.com/conan/approximator/conan-packages \
+ && conan profile new default --detect                                                      \
+ && conan profile update settings.compiler.libcxx=libstdc++11 default
+
+LABEL maintainer=alex@nls.la                   \
+      org.label-schema.build-date=$BUILD_DATE  \
+      org.label-schema.vcs-ref=$VCS_REF        \
+      org.label-schema.vcs-type="git"          \
+      org.label-schema.vcs-url="https://github.com/approximator/Dockerfiles"

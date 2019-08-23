@@ -2,18 +2,23 @@ services:
   - docker
 
 env:
-  - IMAGE=qt
-  - IMAGE=traviscli     WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/traviscli/-EyEPcISuXT3ZKruIVYqk6l4IsA=
-  - IMAGE=qttest        WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/qttest/sGTa1LQ5hd_Ef9Z4eoOYrAFfo3I=
-  - IMAGE=jupyter       WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/jupyter/D0oYuf7TdKecFpa08pG-cUrS8x0=
-  - IMAGE=pycharm       WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/pycharm/g-6QUo2PiO3EErtM2i_MQ6PztbE=
-  - IMAGE=digikam
+  - BUILD_TYPE=Release CMD="./qt/build.sh"
+  - BUILD_TYPE=Debug CMD="./qt/build.sh"
+  - CMD="./build.sh traviscli"
+    WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/traviscli/-EyEPcISuXT3ZKruIVYqk6l4IsA=
+  - CMD="./build.sh qttest"
+    WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/qttest/sGTa1LQ5hd_Ef9Z4eoOYrAFfo3I=
+  - CMD="./build.sh jupyter"
+    WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/jupyter/D0oYuf7TdKecFpa08pG-cUrS8x0=
+  - CMD="./build.sh pycharm"
+    WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/pycharm/g-6QUo2PiO3EErtM2i_MQ6PztbE=
+  - CMD="./build.sh digikam"
 
 addons:
   apt:
     packages:
+      - ca-certificates
       - httpie
 
 script:
-  # build images
-  - ./build.sh $IMAGE
+  - $CMD
