@@ -1,0 +1,11 @@
+name: 'Setup conan'
+description: 'Setup conan'
+author: 'Approximator'
+inputs:
+  conan_cmd:
+    description: 'conan command'
+    default: 'conan --help'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'

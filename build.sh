@@ -1,6 +1,6 @@
 #!/bin/bash
 
-: ${PUSH_TO_DOCKER_HUB:=true}
+: ${PUSH_TO_DOCKER_HUB:=false}
 
 if $PUSH_TO_DOCKER_HUB ; then
     DOCKER_USERNAME=${DOCKER_USERNAME:?}

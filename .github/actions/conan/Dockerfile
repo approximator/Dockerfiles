@@ -1,12 +1,10 @@
 FROM ubuntu:bionic
 
-ARG BUILD_DATE
-ARG VCS_REF
-
 COPY conanfile.txt /conanfile/
+COPY entrypoint.sh /entrypoint.sh
 
 RUN apt-get update && apt-get install -y software-properties-common sudo       \
-      gcc-7 g++-7                                                              \
+      gcc-7 g++-7 gcc-8 g++-8                                                  \
       build-essential perl python python3 python3-pip git make cmake           \
       libfontconfig1-dev libxcb1-dev libx11-dev libc6-dev libgl1-mesa-dev      \
       '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev \
@@ -16,8 +14,4 @@ RUN apt-get update && apt-get install -y software-properties-common sudo       \
  && conan profile new default --detect                                                      \
  && conan profile update settings.compiler.libcxx=libstdc++11 default
 
-LABEL maintainer=alex@nls.la                   \
-      org.label-schema.build-date=$BUILD_DATE  \
-      org.label-schema.vcs-ref=$VCS_REF        \
-      org.label-schema.vcs-type="git"          \
-      org.label-schema.vcs-url="https://github.com/approximator/Dockerfiles"
+ENTRYPOINT [ "/entrypoint.sh" ]
