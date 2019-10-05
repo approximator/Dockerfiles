@@ -1,6 +1,14 @@
 name: Qt
 
-on: [push]
+on:
+  push:
+    paths:
+    - '.github/actions/conan/**'
+    - '.github/workflows/Build-qt.yml'
+  pull_request:
+    paths:
+    - '.github/actions/conan/**'
+    - '.github/workflows/Build-qt.yml'
 
 jobs:
 
@@ -28,11 +36,11 @@ jobs:
       with:
         conan_cmd: >-
           conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan     &&
-          conan remote add approximator https://api.bintray.com/conan/approximator/conan-packages &&
           conan profile new default --detect                                                      &&
           conan profile update settings.compiler.libcxx=libstdc++11 default                       &&
           conan profile update settings.compiler=${{ matrix.compiler }} default                   &&
           conan profile update settings.compiler.version=${{ matrix.compiler_version }} default   &&
+          conan install -u /conanfile -s build_type=${{ matrix.build_type }} --build=missing      &&
+          conan remote add approximator https://api.bintray.com/conan/approximator/conan-packages &&
           conan user -p $CONAN_REMOTE_PSWD -r approximator approximator                           &&
-          conan install /conanfile -s build_type=${{ matrix.build_type }} --build=missing         &&
           conan upload qt/5.13.0@bincrafters/stable --all -r=approximator
