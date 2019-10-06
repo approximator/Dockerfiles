@@ -9,18 +9,6 @@
 [![](https://images.microbadger.com/badges/version/approximator/qt.svg)](https://hub.docker.com/r/approximator/qt/tags/)
 [![](https://images.microbadger.com/badges/commit/approximator/qt.svg)](http://microbadger.com/images/approximator/qt)
 
-Currently there are two versions of Qt: **5.6.1** and **5.7.0** that can be pulled
-as: `docker pull approximator/qt:5.6.1` and `docker pull approximator/qt:5.7.0`
-
-## qbs
-
-[![Docker Pulls](https://img.shields.io/docker/pulls/approximator/qbs.svg)](https://hub.docker.com/r/approximator/qbs/)
-[![](https://images.microbadger.com/badges/image/approximator/qbs.svg)](https://hub.docker.com/r/approximator/qbs/)
-[![](https://images.microbadger.com/badges/version/approximator/qbs.svg)](https://hub.docker.com/r/approximator/qbs/tags/)
-[![](https://images.microbadger.com/badges/commit/approximator/qbs.svg)](http://microbadger.com/images/approximator/qbs)
-
-Several versions of **qbs** with different versions of Qt.
-
 ## qtcreator
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/approximator/qtcreator.svg)](https://hub.docker.com/r/approximator/qtcreator/)
@@ -32,14 +20,6 @@ Several version of **QtCreator** based on **qt:5.6.1** and **qt:5.7.0** images.
 Use `qtcreator/qtcreator` script to start **qtcreator** inside the docker.
 
 Note: current `$PWD` will be mounted to the container.
-
-
-## clang format
-
-[![Docker Pulls](https://img.shields.io/docker/pulls/approximator/clangformat.svg)](https://hub.docker.com/r/approximator/clangformat/)
-[![](https://images.microbadger.com/badges/image/approximator/clangformat.svg)](https://hub.docker.com/r/approximator/clangformat/)
-[![](https://images.microbadger.com/badges/version/approximator/clangformat.svg)](https://hub.docker.com/r/approximator/clangformat/tags/)
-[![](https://images.microbadger.com/badges/commit/approximator/clangformat.svg)](http://microbadger.com/images/approximator/clangformat)
 
 ## qttest
 
