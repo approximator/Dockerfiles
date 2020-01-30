@@ -1,38 +1,116 @@
 name: Qt
 
-on: [push]
+on:
+  push:
+    paths:
+      - ".github/actions/conan/**"
+      - ".github/workflows/Build-qt.yml"
+  pull_request:
+    paths:
+      - ".github/actions/conan/**"
+      - ".github/workflows/Build-qt.yml"
 
 jobs:
-
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
+        os: [ubuntu-latest] # , windows-latest
         compiler_version:
-          - 7
           - 8
         compiler:
           - gcc
         build_type:
           - Release
+        shared:
+          - "False"
+        qt_version:
+          - 5.14.0
+    env:
+      CONAN_REMOTE_PSWD: ${{ secrets.CONAN_REMOTE_PSWD }}
+      QT_OPTIONS: >-
+        --options qt:GUI=True
+        --options qt:qtsvg=True
+        --options qt:widgets=True
+        --options qt:qtdeclarative=True
+        --options qt:qtmultimedia=True
+        --options qt:qtxmlpatterns=True
+        --options qt:qttranslations=True
+        --options qt:qtquickcontrols=True
+        --options qt:qtquickcontrols2=True
+        --options qt:qtx11extras=True
+        --options qt:qtimageformats=True
+        --options qt:qtgraphicaleffects=True
+        --options qt:qttools=True
+        --options qt:qtconnectivity=True
+        --options qt:qtnetworkauth=True
+        --options qt:with_freetype=True
+        --options qt:with_pq=False
+        --options qt:with_odbc=False
+        --options qt:with_mysql=False
+        --options qt:with_sqlite3=False
+        --options qt:with_fontconfig=False
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v1
+      - name: Checkout
+        uses: actions/checkout@v1
 
-    - name: Conan install Qt
-      env:
-        CONAN_REMOTE_PSWD: ${{ secrets.CONAN_REMOTE_PSWD }}
+      - name: Prepare action
+        uses: ./.github/actions/conan
 
-      uses: ./.github/actions/conan
-      with:
-        conan_cmd: >-
-          conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan     &&
-          conan remote add approximator https://api.bintray.com/conan/approximator/conan-packages &&
-          conan profile new default --detect                                                      &&
-          conan profile update settings.compiler.libcxx=libstdc++11 default                       &&
-          conan profile update settings.compiler=${{ matrix.compiler }} default                   &&
-          conan profile update settings.compiler.version=${{ matrix.compiler_version }} default   &&
-          conan user -p $CONAN_REMOTE_PSWD -r approximator approximator                           &&
-          conan install /conanfile -s build_type=${{ matrix.build_type }} --build=missing         &&
-          conan upload qt/5.13.0@bincrafters/stable --all -r=approximator
+      - run: >-
+          mkdir -p $RUNNER_WORKSPACE/Dockerfiles/deps
+
+      - run: echo "$RUNNER_WORKSPACE"
+
+      - name: Generating dependency graph
+        uses: ./.github/actions/conan
+        with:
+          conan_cmd: >-
+            echo ${QT_OPTIONS}         &&
+            ls -lah /github/           &&
+            ls -lah /github/workspace/ &&
+            conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan     &&
+            conan profile new default --detect                                                      &&
+            conan profile update settings.compiler.libcxx=libstdc++11 default                       &&
+            conan profile update settings.compiler=${{ matrix.compiler }} default                   &&
+            conan profile update settings.compiler.version=${{ matrix.compiler_version }} default   &&
+            conan info    --update                                       \
+                          --settings build_type=${{ matrix.build_type }} \
+                          --options *:shared=${{ matrix.shared }}        \
+                          ${QT_OPTIONS}                                  \
+                          qt/${{ matrix.qt_version}}@bincrafters/stable  \
+                          --graph=/github/workspace/deps/${{ matrix.qt_version}}.html &&
+            ls -lah /github/workspace/deps/
+
+      - uses: actions/upload-artifact@master
+        with:
+          name: dependency-graphs
+          path: deps
+
+      - name: Conan install Qt
+        env:
+          CONAN_REMOTE_PSWD: ${{ secrets.CONAN_REMOTE_PSWD }}
+
+        uses: ./.github/actions/conan
+        with:
+          conan_cmd: >-
+            rm -rf /github/home/.conan/                                                             &&
+            conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan     &&
+            conan profile new default --detect                                                      &&
+            conan profile update settings.compiler.libcxx=libstdc++11 default                       &&
+            conan profile update settings.compiler=${{ matrix.compiler }} default                   &&
+            conan profile update settings.compiler.version=${{ matrix.compiler_version }} default   &&
+            conan install --update                                       \
+                          --settings build_type=${{ matrix.build_type }} \
+                          --generator cmake                              \
+                          --build=missing                                \
+                          --build=outdated                               \
+                          --build=cascade                                \
+                          --options *:shared=${{ matrix.shared }}        \
+                          ${QT_OPTIONS}                                  \
+                          qt/${{ matrix.qt_version}}@bincrafters/stable                             &&
+            conan remote add approximator https://api.bintray.com/conan/approximator/conan-packages &&
+            conan user -p $CONAN_REMOTE_PSWD -r approximator approximator                           &&
+            conan upload "*" --all --confirm -r=approximator
