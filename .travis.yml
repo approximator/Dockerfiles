@@ -1,9 +1,9 @@
+dist: bionic
+
 services:
   - docker
 
 env:
-  # - BUILD_TYPE=Release CMD="./qt/build.sh"
-  # - BUILD_TYPE=Debug CMD="./qt/build.sh"
   - CMD="./build.sh traviscli"
     PUSH_TO_DOCKER_HUB=true
     WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/traviscli/-EyEPcISuXT3ZKruIVYqk6l4IsA=
