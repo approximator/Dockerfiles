@@ -1,5 +1,6 @@
 FROM ubuntu:bionic
 
+ENV DOWNLOAD_URL=https://download.jetbrains.com/python/pycharm-community-2019.3.3.tar.gz
 ENV PYCHARM_HOME=/etc/pycharm
 ADD common/entrypoint.sh /usr/local/bin/entrypoint.sh
 ADD common/setup.sh /tmp/setup.sh
@@ -25,15 +26,16 @@ RUN /tmp/setup.sh                                 \
     zlib1g-dev                 \
  && apt-get clean              \
                                \
- && pip3 install -U            \
-    wheel virtualenv           \
+ && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 100 \
+ && python3 -m pip install -U  \
+    setuptools wheel virtualenv\
                                \
- && wget -P /tmp/ https://download.jetbrains.com/python/pycharm-community-2019.2.4.tar.gz \
- && mkdir ${PYCHARM_HOME}                                                        \
- && tar -xzvf /tmp/pycharm-community-2019.2.4.tar.gz -C ${PYCHARM_HOME} --strip=1\
- && chmod +x /usr/local/bin/gosu                                                 \
- && cd /tmp/               && find . -delete                                     \
- && cd /var/lib/apt/lists/ && find . -delete                                     \
+ && wget -P /tmp/ -O /tmp/pycharm.tar.gz ${DOWNLOAD_URL}                       \
+ && mkdir ${PYCHARM_HOME}                                                      \
+ && tar -xzvf /tmp/pycharm.tar.gz -C ${PYCHARM_HOME} --strip=1                 \
+ && chmod +x /usr/local/bin/gosu                                               \
+ && cd /tmp/               && find . -delete                                   \
+ && cd /var/lib/apt/lists/ && find . -delete                                   \
  && cd /var/tmp/           && find . -delete
 
 
