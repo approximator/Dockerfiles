@@ -1,1 +1,1 @@
-Dockerfile_2020.1.2
+Dockerfile_2020.1.3
