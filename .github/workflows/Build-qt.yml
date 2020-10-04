@@ -26,7 +26,7 @@ jobs:
         shared:
           - "False"
         qt_version:
-          - 5.14.0
+          - 5.15.1
     env:
       CONAN_REMOTE_PSWD: ${{ secrets.CONAN_REMOTE_PSWD }}
       QT_OPTIONS: >-
