@@ -17,6 +17,8 @@ env:
     PUSH_TO_DOCKER_HUB=true
     WEBHOOK_URL=https://hooks.microbadger.com/images/approximator/pycharm/g-6QUo2PiO3EErtM2i_MQ6PztbE=
   - CMD="./build.sh digikam"
+  - CMD="./build.sh clion"
+    PUSH_TO_DOCKER_HUB=true
 
 addons:
   apt:
