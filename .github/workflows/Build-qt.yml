@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest] # , windows-latest
+        os: [ubuntu-20.04] # , windows-latest
         compiler_version:
           - 9
         compiler:
@@ -28,7 +28,6 @@ jobs:
         qt_version:
           - 5.15.1
     env:
-      CONAN_REMOTE_PSWD: ${{ secrets.CONAN_REMOTE_PSWD }}
       QT_OPTIONS: >-
         --options qt:GUI=True
         --options qt:qtsvg=True
@@ -56,33 +55,50 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - name: Prepare action
-        uses: ./.github/actions/conan
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+          architecture: 'x64'
 
-      - run: >-
-          mkdir -p $RUNNER_WORKSPACE/Dockerfiles/deps
+      - name: Dirs
+        run: >-
+         mkdir -p ${{ github.workspace }}/deps                         &&
+         echo "Runner workspace: $RUNNER_WORKSPACE"                    &&
+         echo "Github workspace: ${{ github.workspace }}"              &&
+         echo "Home dir: $HOME"
 
-      - run: echo "$RUNNER_WORKSPACE"
+      - name: install packages
+        run: >-
+          sudo sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list &&
+          sudo apt-get update                                          &&
+          DEBIAN_FRONTEND=noninteractive sudo apt-get install -y software-properties-common sudo gcc-9 g++-9 build-essential perl python python3 python3-pip git make cmake libfontconfig1-dev libxcb1-dev libx11-dev libc6-dev libgl1-mesa-dev '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev xcb-proto xorg-dev wget fuse                                 &&
+          sudo apt-get -y build-dep qt5-default                        &&
+          pip install conan                                            &&
+          echo "pip version: $(pip --version)"                         &&
+          echo "conan version: $(conan --version)"
+
+      - name: Setup conan
+        run: >-
+          conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan         &&
+          conan remote add myremote "${{ secrets.CONAN_SERVER }}" --insert                            &&
+          conan user -p "${{ secrets.CONAN_PASS }}" -r myremote "${{ secrets.CONAN_USER }}"           &&
+          conan profile new default --detect                                                          &&
+          conan profile update settings.compiler.libcxx=libstdc++11 default                           &&
+          conan profile update settings.compiler=${{ matrix.compiler }} default                       &&
+          conan profile update settings.compiler.version=${{ matrix.compiler_version }} default       &&
+          conan remote list
 
       - name: Generating dependency graph
-        uses: ./.github/actions/conan
-        with:
-          conan_cmd: >-
-            echo ${QT_OPTIONS}         &&
-            ls -lah /github/           &&
-            ls -lah /github/workspace/ &&
-            conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan     &&
-            conan profile new default --detect                                                      &&
-            conan profile update settings.compiler.libcxx=libstdc++11 default                       &&
-            conan profile update settings.compiler=${{ matrix.compiler }} default                   &&
-            conan profile update settings.compiler.version=${{ matrix.compiler_version }} default   &&
-            conan info    --update                                       \
-                          --settings build_type=${{ matrix.build_type }} \
-                          --options *:shared=${{ matrix.shared }}        \
-                          ${QT_OPTIONS}                                  \
-                          qt/${{ matrix.qt_version}}@bincrafters/stable  \
-                          --graph=/github/workspace/deps/${{ matrix.qt_version}}.html &&
-            ls -lah /github/workspace/deps/
+        run: >-
+          set -x &&
+          conan search "qt/${{ matrix.qt_version}}" -r=all &&
+          conan search "qt/${{ matrix.qt_version}}" -r=myremote &&
+          conan info    --update                                       \
+                        --settings build_type=${{ matrix.build_type }} \
+                        --options *:shared=${{ matrix.shared }}        \
+                        ${QT_OPTIONS}                                  \
+                        qt/${{ matrix.qt_version}}@bincrafters/stable  \
+                        --graph=${{ github.workspace }}/deps/${{ matrix.qt_version}}.html
 
       - uses: actions/upload-artifact@master
         with:
@@ -90,27 +106,15 @@ jobs:
           path: deps
 
       - name: Conan install Qt
-        env:
-          CONAN_REMOTE_PSWD: ${{ secrets.CONAN_REMOTE_PSWD }}
-
-        uses: ./.github/actions/conan
-        with:
-          conan_cmd: >-
-            rm -rf /github/home/.conan/                                                             &&
-            conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan     &&
-            conan profile new default --detect                                                      &&
-            conan profile update settings.compiler.libcxx=libstdc++11 default                       &&
-            conan profile update settings.compiler=${{ matrix.compiler }} default                   &&
-            conan profile update settings.compiler.version=${{ matrix.compiler_version }} default   &&
-            conan install --update                                       \
-                          --settings build_type=${{ matrix.build_type }} \
-                          --generator cmake                              \
-                          --build=missing                                \
-                          --build=outdated                               \
-                          --build=cascade                                \
-                          --options *:shared=${{ matrix.shared }}        \
-                          ${QT_OPTIONS}                                  \
-                          qt/${{ matrix.qt_version}}@bincrafters/stable                             &&
-            conan remote add approximator https://api.bintray.com/conan/approximator/conan-packages &&
-            conan user -p $CONAN_REMOTE_PSWD -r approximator approximator                           &&
-            conan upload "*" --all --confirm -r=approximator
+        run: >-
+          set -x &&
+          conan install --update                                        \
+                        --settings build_type=${{ matrix.build_type }}  \
+                        --generator cmake                               \
+                        --build=missing                                 \
+                        --build=outdated                                \
+                        --build=cascade                                 \
+                        --options *:shared=${{ matrix.shared }}         \
+                        ${QT_OPTIONS}                                   \
+                        qt/${{ matrix.qt_version}}@bincrafters/stable   &&
+          conan upload "*" --all --confirm -r=myremote
