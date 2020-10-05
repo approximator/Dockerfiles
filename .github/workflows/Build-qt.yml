@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest] # , windows-latest
+        os: [ubuntu-20.04] # , windows-latest
         compiler_version:
           - 9
         compiler:
@@ -60,7 +60,13 @@ jobs:
         uses: ./.github/actions/conan
 
       - run: >-
-          mkdir -p $RUNNER_WORKSPACE/Dockerfiles/deps
+          mkdir -p $RUNNER_WORKSPACE/Dockerfiles/deps &&
+          wget -O /tmp/rclone.deb https://github.com/rclone/rclone/releases/download/v1.53.1/rclone-v1.53.1-linux-amd64.deb &&
+          sudo apt install /tmp/rclone.deb &&
+          mkdir -p "$RUNNER_WORKSPACE/.conan_server/data/" &&
+          cp -v "$RUNNER_WORKSPACE/Dockerfiles/qt/server.conf" "$RUNNER_WORKSPACE/.conan_server/" &&
+          rclone mount :s3:myconan2/conan_server/data/ "$RUNNER_WORKSPACE/.conan_server/data/" --s3-endpoint=${S3_ENDPOINT} --s3-provider=${S3_PROVIDER} --s3-region=${S3_REGION} --s3-access-key-id=${S3_ACCESS_KEY_ID} --s3-secret-access-key=${S3_SECRET_ACCESS_KEY} --s3-max-upload-parts=1000 --vfs-cache-mode full --no-modtime &&
+          ls -lah $RUNNER_WORKSPACE/.conan_server/data/
 
       - run: echo "$RUNNER_WORKSPACE"
 
@@ -71,9 +77,6 @@ jobs:
             echo ${QT_OPTIONS}         &&
             ls -lah /github/           &&
             ls -lah /github/workspace/ &&
-            conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan     &&
-            conan profile new default --detect                                                      &&
-            conan profile update settings.compiler.libcxx=libstdc++11 default                       &&
             conan profile update settings.compiler=${{ matrix.compiler }} default                   &&
             conan profile update settings.compiler.version=${{ matrix.compiler_version }} default   &&
             conan info    --update                                       \
@@ -96,10 +99,6 @@ jobs:
         uses: ./.github/actions/conan
         with:
           conan_cmd: >-
-            rm -rf /github/home/.conan/                                                             &&
-            conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan     &&
-            conan profile new default --detect                                                      &&
-            conan profile update settings.compiler.libcxx=libstdc++11 default                       &&
             conan profile update settings.compiler=${{ matrix.compiler }} default                   &&
             conan profile update settings.compiler.version=${{ matrix.compiler_version }} default   &&
             conan install --update                                       \
@@ -110,7 +109,6 @@ jobs:
                           --build=cascade                                \
                           --options *:shared=${{ matrix.shared }}        \
                           ${QT_OPTIONS}                                  \
-                          qt/${{ matrix.qt_version}}@bincrafters/stable                             &&
-            conan remote add approximator https://api.bintray.com/conan/approximator/conan-packages &&
-            conan user -p $CONAN_REMOTE_PSWD -r approximator approximator                           &&
-            conan upload "*" --all --confirm -r=approximator
+                          qt/${{ matrix.qt_version}}@bincrafters/stable
+
+            # conan upload "*" --all --confirm -r=myremote
