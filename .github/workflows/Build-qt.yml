@@ -3,11 +3,11 @@ name: Qt
 on:
   push:
     paths:
-      - ".github/actions/conan/**"
+      - "qt/**"
       - ".github/workflows/Build-qt.yml"
   pull_request:
     paths:
-      - ".github/actions/conan/**"
+      - "qt/**"
       - ".github/workflows/Build-qt.yml"
 
 jobs:
