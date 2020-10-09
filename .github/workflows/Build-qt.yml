@@ -23,6 +23,7 @@ jobs:
           - gcc
         build_type:
           - Release
+          - Debug
         shared:
           - "False"
         qt_version:
