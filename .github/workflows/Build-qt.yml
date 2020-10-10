@@ -25,6 +25,7 @@ jobs:
           - Release
         shared:
           - "False"
+          - "True"
         qt_version:
           - 5.15.1
     env:
