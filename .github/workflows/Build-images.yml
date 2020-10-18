@@ -1,0 +1,44 @@
+name: Build Images
+
+on:
+  push:
+
+  schedule:
+    - cron: "0 0 * * 5"
+
+jobs:
+  Build:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - CMD: "./build.sh qttest"
+            WEBHOOK_URL: https://hooks.microbadger.com/images/approximator/qttest/sGTa1LQ5hd_Ef9Z4eoOYrAFfo3I=
+
+          - CMD: "./build.sh jupyter"
+            WEBHOOK_URL: https://hooks.microbadger.com/images/approximator/jupyter/D0oYuf7TdKecFpa08pG-cUrS8x0=
+
+          - CMD: "./build.sh pycharm"
+            WEBHOOK_URL: https://hooks.microbadger.com/images/approximator/pycharm/g-6QUo2PiO3EErtM2i_MQ6PztbE=
+
+          - CMD: "./build.sh clion"
+            WEBHOOK_URL: ""
+
+    env:
+      PUSH_TO_DOCKER_HUB: true
+
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y ca-certificates httpie
+
+      - uses: actions/checkout@master
+
+      - name: Build ${{ matrix.CMD }}
+        run: |
+          export WEBHOOK_URL=${{ matrix.WEBHOOK_URL }}
+          export DOCKER_USERNAME=${{ secrets.DOCKER_HUB_U }}
+          export DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_P }}
+          ${{ matrix.CMD }}

@@ -41,17 +41,9 @@ function build {
         return $?
     fi
 
-    COMMIT_HASH=`git log -1 --format=%H "$FILE"`
+    COMMIT_HASH=$(git rev-parse --short HEAD)
     echo "Building approximator/$image:$VERSION (Commit: $COMMIT_HASH)..."
-    docker build --build-arg VCS_REF="$COMMIT_HASH" --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` -f "$FILE" -t "approximator/$image:$VERSION" .. &> "$LOG_DIR/$image.$VERSION.txt" &
-    pid=$!
-    while ps -p $pid >/dev/null
-    do
-        echo -n "."
-        sleep 10
-    done
-    wait $pid
-
+    docker build --build-arg VCS_REF="$COMMIT_HASH" --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") -f "$FILE" -t "approximator/$image:$VERSION" ..
     return $?
 }
 
@@ -96,7 +88,6 @@ else
     echo "==================== Errors ===================="
     for build in "${failed[@]}"; do
         echo "$build"
-        cat "$LOG_DIR/$build.txt"
     done
     exit 1
 fi
