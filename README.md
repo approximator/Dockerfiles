@@ -1,13 +1,6 @@
 # Dockerfiles
 
-[![Build Status](https://travis-ci.org/approximator/Dockerfiles.svg?branch=master)](https://travis-ci.org/approximator/Dockerfiles)
-
-## qt
-
-[![Docker Pulls](https://img.shields.io/docker/pulls/approximator/qt.svg)](https://hub.docker.com/r/approximator/qt/)
-[![](https://images.microbadger.com/badges/image/approximator/qt.svg)](https://hub.docker.com/r/approximator/qt/)
-[![](https://images.microbadger.com/badges/version/approximator/qt.svg)](https://hub.docker.com/r/approximator/qt/tags/)
-[![](https://images.microbadger.com/badges/commit/approximator/qt.svg)](http://microbadger.com/images/approximator/qt)
+![Qt](https://github.com/approximator/Dockerfiles/workflows/Qt/badge.svg)
 
 ## qtcreator
 
