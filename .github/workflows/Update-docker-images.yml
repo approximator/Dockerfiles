@@ -2,9 +2,6 @@ name: Update Dockerfiles
 
 on:
   push:
-    paths:
-      - "pycharm/**"
-      - ".github/workflows/Update-docker-images.yml"
 
   schedule:
     - cron: "0 5 * * *"
@@ -14,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      REPO: ${{ github.repository }}
       TOKEN: ${{ secrets.GITHUB_TOKEN }}
       REPO_URL: https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
 
@@ -24,54 +20,12 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v1
         with:
-          version: 3.7
+          version: 3.8
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip setuptools wheel httpie
-
-      - name: Setup git
-        run: |
-          echo ${REPO_URL}
-          git clone ${REPO_URL} dc
-          cd dc
-          git remote -v
-          git config --local user.name "Dockerfiles updater"
-          git fetch origin
-          git checkout master
-          git checkout -b pycharm-update master
+          python -m pip install --upgrade pip setuptools wheel requests markdownify semver gitpython PyGithub
 
       - name: Update Dockerfiles
         id: updater
         run: |
-          python pycharm/update.py
-          rm dc/pycharm/Dockerfile*
-          cp -rv pycharm/Dockerfile* dc/pycharm/
-
-      - name: Is Updated
-        run: |
-          echo ::set-env name=UPDATED::$(cat pycharm/updated)
-          echo ::set-env name=NEW_VERSION::$(cat pycharm/new_version)
-
-      - name: Echo Is Updated
-        run: |
-          echo $UPDATED
-          echo $NEW_VERSION
-
-      - name: Commit files
-        if: env.UPDATED == 'yes'
-        run: |
-          cd dc
-          git add pycharm
-          git commit -m "[Pycharm] Version $NEW_VERSION"
-          git show -1
-
-      - name: Push changes
-        if: env.UPDATED == 'yes'
-        run: |
-          cd dc
-          git push "${REPO_URL}" pycharm-update
-
-      - name: Create PR
-        if: env.UPDATED == 'yes'
-        run: |
-          http --verbose --ignore-stdin POST https://api.github.com/repos/$REPO/pulls Authorization:"token $TOKEN" title="[Pycharm] Version $NEW_VERSION" body="" head=pycharm-update base=master
+          python common/UpdateImage.py
