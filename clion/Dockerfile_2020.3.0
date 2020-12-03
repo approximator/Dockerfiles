@@ -1,6 +1,6 @@
 FROM ubuntu:bionic
 
-ENV DOWNLOAD_URL=https://download.jetbrains.com/cpp/CLion-2020.2.5.tar.gz
+ENV DOWNLOAD_URL=https://download.jetbrains.com/cpp/CLion-2020.3.0.tar.gz
 ENV CLION_HOME=/etc/clion
 ADD common/entrypoint.sh /usr/local/bin/entrypoint.sh
 ADD common/setup.sh /tmp/setup.sh
