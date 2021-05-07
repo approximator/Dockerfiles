@@ -35,6 +35,7 @@ RUN apt-get update \
         wx3.0-i18n              \
         xvfb                    \
  && apt-get clean               \
+ && pip install -U pip wheel setuptools                      \
  && pip install pyscreenshot pyvirtualdisplay easyprocess -V \
                                                              \
  && cd /tmp/               && find . -delete                 \
