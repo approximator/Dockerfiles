@@ -1,5 +1,4 @@
-FROM ubuntu:focal
-
+FROM ubuntu:20.04
 ENV DOWNLOAD_URL=https://download.jetbrains.com/cpp/CLion-2021.1.1.tar.gz
 ENV CLION_HOME=/etc/clion
 ADD common/entrypoint.sh /usr/local/bin/entrypoint.sh
@@ -11,6 +10,7 @@ RUN /tmp/setup.sh                                 \
     apt-transport-https        \
     build-essential            \
     ca-certificates            \
+    cmake                      \
     git                        \
     libfreetype6-dev           \
     libxft-dev                 \
