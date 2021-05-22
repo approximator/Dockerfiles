@@ -33,7 +33,6 @@ RUN /tmp/setup.sh                                 \
  && wget -P /tmp/ -O /tmp/clion.tar.gz ${DOWNLOAD_URL}                         \
  && mkdir ${CLION_HOME}                                                        \
  && tar -xzvf /tmp/clion.tar.gz -C ${CLION_HOME} --strip=1                     \
- && chmod +x /usr/local/bin/gosu                                               \
  && cd /tmp/               && find . -delete                                   \
  && cd /var/lib/apt/lists/ && find . -delete                                   \
  && cd /var/tmp/           && find . -delete
