@@ -20,4 +20,4 @@ echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 export HOME=/home/$USER_NAME
 export USER=$USER_NAME
 
-exec /usr/local/bin/gosu "$USER_NAME" /bin/sh -c "$@"
+exec gosu "$USER_NAME" /bin/sh -c "$@"
