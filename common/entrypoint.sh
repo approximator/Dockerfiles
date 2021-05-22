@@ -11,8 +11,11 @@ fi
 getent group "$GROUP_ID" >> /dev/null
 [[ $? -eq 0 ]] || groupadd -g "$GROUP_ID" "$USER_NAME"
 useradd -N -u "$USER_ID" "$USER_NAME"
+
 chown "$USER_ID":"$GROUP_ID" "/home/$USER_NAME"
 chown -R "$USER_ID":"$GROUP_ID" /tmp
+
+echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 export HOME=/home/$USER_NAME
 export USER=$USER_NAME
