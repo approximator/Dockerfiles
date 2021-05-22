@@ -4,6 +4,8 @@ DEBIAN_FRONTEND=noninteractive apt-get update && \
 DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install \
     ca-certificates \
     gpg             \
+    libssl-dev      \
+    libuv1-dev      \
     sudo            \
     wget
 
