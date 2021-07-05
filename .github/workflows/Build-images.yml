@@ -3,6 +3,13 @@ name: Build Images
 on:
   push:
   pull_request:
+    paths:
+        - "clion/**"
+        - "common/**"
+        - "jupyter/**"
+        - "pycharm/**"
+        - "qttest/**"
+        - ".github/workflows/Build-images.yml"
   schedule:
     - cron: "0 0 * * 5"
 
