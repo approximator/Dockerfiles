@@ -13,6 +13,7 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+
     strategy:
       fail-fast: false
       matrix:
@@ -30,11 +31,34 @@ jobs:
       - name: Build Qt
         run: |
           cd qt6
-          mkdir -p $(pwd)/build $(pwd)/install
-          chmod 777 $(pwd)/build $(pwd)/install
+          mkdir -pv $(pwd)/build $(pwd)/install
+          chmod -v 777 $(pwd)/build $(pwd)/install
           docker run --rm -i -u 1000:1000 -v $(pwd):/src qt6.builder bash -c "cd /src/build && cmake /src -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/src/install && cmake --build . --parallel"
+          ls -lah $(pwd)/install
+          ls -lah $(pwd)/install/Release
 
       - uses: actions/upload-artifact@v2
         with:
           name: qt6
           path: qt6/install
+
+      - name: Compile test application
+        run: |
+          cd qt6
+          mkdir -v $(pwd)/testapp_build $(pwd)/testapp_install
+          chmod -v 777 $(pwd)/testapp_build $(pwd)/testapp_install
+          docker run --rm -i -u 1000:1000 -v $(pwd):/src qt6.builder bash -c "mkdir -p /src/testapp_build && cd /src/testapp_build && cmake /src/test -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/src/testapp_install -DCMAKE_PREFIX_PATH=/src/install/Release/qt6.1.0 -DOPENSSL_ROOT_DIR=/src/install/Release/openssl -DCMAKE_VERBOSE_MAKEFILE=ON && cmake --build . --parallel && cmake --install ."
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: testapp
+          path: qt6/testapp_build/test
+
+      - name: LDD
+        run: |
+          cd qt6
+          docker run --rm -i -u 1000:1000 -v $(pwd):/src qt6.builder bash -c "cd /src/testapp_build && ldd ./test"
+
+      # - name: Run test app
+      #   run: |
+      #     docker run --rm -i -u 1000:1000 -v $(pwd):/src qt6.builder bash -c "cd /src/testapp_build && ./test& sleep 10 ; kill -9 %1"
